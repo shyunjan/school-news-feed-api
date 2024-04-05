@@ -9,6 +9,7 @@
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "nest build --webpack --webpackPath webpack-hmr.config.js",
+    "build-vercel": "nest build --webpack --webpackPath webpack-hmr.config.js && node dist/main.js",
     "build:swc": "swc --ignore \"**/*.spec.ts\" --delete-dir-on-start --out-dir dist/src/ src/",
     "build:dev": "nest build --webpack --webpackPath webpack-hmr.config.js",
     "build:prod": "nest build --webpack --webpackPath webpack-hmr.config.js",
