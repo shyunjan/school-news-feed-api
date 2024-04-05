@@ -8,6 +8,6 @@ export class AppController {
 
   @Get('/welcome')
   welcome(): string {
-    return 'School News Feed Service API Server Is Running!';
+    return 'Welcome to School News Feed Service API Server';
   }
 }
