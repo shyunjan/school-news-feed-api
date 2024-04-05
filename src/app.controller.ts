@@ -3,6 +3,6 @@ import {Controller, Get} from '@nestjs/common';
 export class AppController {
   @Get()
   healthCheck(): string {
-    return 'Order Planet Core Server Is Running!';
+    return 'School News Feed Service API Server Is Running!';
   }
 }

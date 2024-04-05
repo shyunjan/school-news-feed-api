@@ -1,5 +1,6 @@
 interface Config {
   MODE?: string;
+  SERVICE_PORT?: string;
   WEB?: string;
   DATABASE_URL?: string;
   JWT_SECRET?: string;
@@ -24,6 +25,7 @@ interface Config {
 
 export const config: Config = {
   MODE: process.env.MODE,
+  SERVICE_PORT: process.env.SERVICE_PORT,
   WEB: process.env.WEB,
   DATABASE_URL: process.env.DATABASE_URL,
   JWT_SECRET: process.env.JWT_SECRET,

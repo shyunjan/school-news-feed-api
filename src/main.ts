@@ -32,7 +32,7 @@ async function bootstrap() {
   addLoggerHook(fastifyAdapter.getInstance());
   // app.register(multipart);
   
-  const port = 3000;
+  const port = Number(config.SERVICE_PORT);
   app.useGlobalPipes(new ValidationPipe());
   app.useGlobalFilters(new AllExceptionsFilter(app.get(HttpAdapterHost)));
   app.useGlobalInterceptors(new SuccessInterceptor());
@@ -69,4 +69,3 @@ async function bootstrap() {
 }
 
 bootstrap();
-      
