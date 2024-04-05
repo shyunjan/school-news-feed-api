@@ -9,7 +9,6 @@
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "nest build --webpack --webpackPath webpack-hmr.config.js",
-    "build-vercel": "nest build --webpack --webpackPath webpack-hmr.config.js && node dist/main.js",
     "build:swc": "swc --ignore \"**/*.spec.ts\" --delete-dir-on-start --out-dir dist/src/ src/",
     "build:dev": "nest build --webpack --webpackPath webpack-hmr.config.js",
     "build:prod": "nest build --webpack --webpackPath webpack-hmr.config.js",
@@ -21,7 +20,7 @@
     "start:local": "rimraf dist && nest build --webpack --webpackPath webpack-hmr.config.js --watch",
     "start:dev": "rimraf dist && nest build --webpack --webpackPath webpack-hmr.config.js",
     "start:debug": "nest start --debug --watch",
-    "start:prod": "npx prisma db push && rimraf dist && nest build nest build --webpack --webpackPath webpack-hmr.config.js --watch",
+    "start:prod": "rimraf dist && nest build --webpack --webpackPath webpack-hmr.config.js",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",

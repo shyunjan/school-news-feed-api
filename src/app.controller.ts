@@ -1,8 +1,13 @@
 import {Controller, Get} from '@nestjs/common';
 @Controller()
 export class AppController {
-  @Get()
+  @Get('/')
   healthCheck(): string {
+    return 'School News Feed Service API Server Is Running!';
+  }
+
+  @Get('/welcome')
+  welcome(): string {
     return 'School News Feed Service API Server Is Running!';
   }
 }
