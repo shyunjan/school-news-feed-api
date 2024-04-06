@@ -16,11 +16,12 @@ import {
   ApiQuery,
   ApiTags,
 } from '@nestjs/swagger';
+import {CommandBus} from '@nestjs/cqrs';
 import {ResponseDto} from 'src/common/responseDto/response.dto';
 import {CreateAdminDto} from './dto/create-admin.dto';
-import {CommandBus} from '@nestjs/cqrs';
+import { CreateUserDto } from './dto/create-user.dto';
 import { CreateAdminCommand } from './application/command/create-admin.command';
-import { InjectModel } from '@nestjs/mongoose';
+import { CreateUserCommand } from './application/command/create-user.command';
 
 @ApiTags('AUTH')
 @Controller('auth')
@@ -39,14 +40,13 @@ export class AuthController {
     return this.commandBus.execute(new CreateAdminCommand(body));
   }
 
-  // @ApiBearerAuth()
-  // @ApiOkResponse({
-  //   type: ResponseDto,
-  //   description: '성공',
-  // })
-  // @ApiOperation({summary: '관리자 가입'})
-  // @Post('/admin-register')
-  // async createAdmin(@Body() body: CreateAdminDto) {
-  //   return this.commandBus.execute(new CreateAdminCommand(body));
-  // }
+  @ApiOkResponse({
+    type: ResponseDto,
+    description: '성공',
+  })
+  @ApiOperation({summary: '유저(학생) 가입'})
+  @Post('/register-user')
+  async createUser(@Body() body: CreateUserDto) {
+    return this.commandBus.execute(new CreateUserCommand(body));
+  }
 }

@@ -12,6 +12,13 @@ export class AuthRepositoryImplement {
   async createAdmin(user: User): Promise<ObjectId> {
     const userDoc: UserDocument = new this.user(user);
     const result = await userDoc.save();
+    this.logger.debug(`saved admin user ID = ${result._id}`);
+    return result._id as ObjectId;
+  }
+
+  async createUser(user: User): Promise<ObjectId> {
+    const userDoc: UserDocument = new this.user(user);
+    const result = await userDoc.save();
     this.logger.debug(`saved user ID = ${result._id}`);
     return result._id as ObjectId;
   }
