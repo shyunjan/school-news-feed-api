@@ -10,13 +10,14 @@ import {MongooseModule} from '@nestjs/mongoose';
 import {AppController} from './app.controller';
 import {PasswordModule} from './libs/password.module';
 import {config} from 'src/config/config';
+import { AuthModule } from './auth/auth.module';
 
 @Global()
 @Module({
   imports: [
-    // DashboardModule,
     MongooseModule.forRoot(config.MONGO_DB_URL as string),
     PasswordModule,
+    AuthModule,
   ],
   controllers: [AppController],
 })

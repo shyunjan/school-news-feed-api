@@ -38,6 +38,7 @@ const RESULT_CODE = (<T extends {[key: string]: number}>(arg: T): T => arg)({
   NOT_FOUND_VERIFICATION: 10404,
   ONLY_SMS_TYPE_VERIFICATION: 10405,
 
+  VALIDATION_ERROR: 99000, // Request Validation 오류
   UNKNOWN_ERROR: 99999, // 알 수 없는 오류
 });
 

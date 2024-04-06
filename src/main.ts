@@ -1,13 +1,14 @@
 import {HttpAdapterHost, NestFactory} from '@nestjs/core';
 import {AppModule} from './app.module';
 import {DocumentBuilder, SwaggerModule} from '@nestjs/swagger';
-import {ValidationPipe, Logger} from '@nestjs/common';
+import {Logger} from '@nestjs/common';
 import AllExceptionsFilter from './common/error/all-exceptions-filter';
 import AppLogger from './common/logger/Logger';
 import {SuccessInterceptor} from './interceptors/sucess.interceptor';
 import {FastifyAdapter, NestFastifyApplication} from '@nestjs/platform-fastify';
 import addLoggerHook from './hooks/logger.hooks';
 import {config} from 'src/config/config';
+import { customValidationPipe } from './common/error/custom-validation-pipe';
 // import multipart from '@fastify/multipart';
 // import fastifyHelmet from '@fastify/helmet';
 
@@ -33,8 +34,8 @@ async function bootstrap() {
   // app.register(multipart);
   
   const port = 3000;
-  app.useGlobalPipes(new ValidationPipe());
-  app.useGlobalFilters(new AllExceptionsFilter(app.get(HttpAdapterHost)));
+  app.useGlobalPipes(customValidationPipe);
+  app.useGlobalFilters(new AllExceptionsFilter(app.get(HttpAdapterHost))); // TODO: 현재 AllExceptionsFilter가 제대로 작동하지 않고 있다. 나중에 확인할 것
   app.useGlobalInterceptors(new SuccessInterceptor());
   const swaggerConfig = new DocumentBuilder()
   .setTitle('API 문서')

@@ -1,16 +1,10 @@
-import {ApiProperty} from '@nestjs/swagger';
-import {IsNotEmpty} from 'class-validator';
+import {ValidateNested} from 'class-validator';
+import { School } from 'src/school/infra/school.entity';
+import { CreateUserDto } from './create-user.dto';
+import { Type } from 'class-transformer';
 
-export class CreateAdminDto {
-  @ApiProperty({description: '어드민 아이디', required: true})
-  @IsNotEmpty()
-  admin_id: string;
-  
-  @ApiProperty({description: '패스워드', required: true})
-  @IsNotEmpty()
-  password: string;
-  
-  @ApiProperty({description: '학교명', required: true})
-  @IsNotEmpty()
-  school_name: string;
+export class CreateAdminDto extends CreateUserDto {
+  @ValidateNested()
+  @Type(() => School)
+  school: School; // 학교관리자 담당 학교 정보
 }
