@@ -11,17 +11,13 @@ import {config} from 'src/config/config';
 import { AuthController } from './auth.controller';
 import { AuthInjectionToken } from './Injection-token';
 import { AuthRepositoryImplement } from './infra/auth.repository.implement';
-import { CreateAdminCommandHandler, CreateUserCommandHandler } from './application';
+import { CreateAdminCommandHandler, CreateUserCommandHandler, LoginQueryHandler } from './application';
 import { SchoolModule } from 'src/school/school.module';
 
 const application = [
-  // JwtStrategy,
-  // JwtService,
   CreateAdminCommandHandler,
   CreateUserCommandHandler,
-  // LoginQueryHandler,
-  // LoginAdminQueryHandler,
-  // CheckDuplicatedIdQueryHandler,
+  LoginQueryHandler,
 ];
 
 const infrastructure: Provider[] = [
@@ -34,7 +30,7 @@ const infrastructure: Provider[] = [
 @Module({
   imports: [
     CqrsModule,
-    PassportModule.register({defaultStrategy: 'jwt', session: false}),
+    // PassportModule.register({defaultStrategy: 'jwt', session: false}),
     JwtModule.register({
       secret: config.JWT_ACCESS_TOKEN_SECRET,
       signOptions: {

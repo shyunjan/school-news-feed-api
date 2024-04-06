@@ -22,4 +22,8 @@ export class AuthRepositoryImplement {
     this.logger.debug(`saved user ID = ${result._id}`);
     return result._id as ObjectId;
   }
+
+  async findUserById(id: string): Promise<UserDocument> {
+    return (await this.user.findOne({id: id})) as UserDocument;
+  }
 }

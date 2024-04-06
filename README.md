@@ -9,6 +9,9 @@
 <h3>Use</h3>
 <ul>
 <li>MongoDB</li>
+<li>Fastify</li>
+<li>class-validator</li>
+<li>swagger</li>
 <li>Winston</li>
 <li>env</li>
 <li>rxjs</li>

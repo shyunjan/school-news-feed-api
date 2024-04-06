@@ -1,33 +1,17 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  ParseEnumPipe,
-  Post,
-  Put,
-  Query,
-  UseGuards,
-} from '@nestjs/common';
-import {
-  ApiBearerAuth,
-  ApiOkResponse,
-  ApiOperation,
-  ApiQuery,
-  ApiTags,
-} from '@nestjs/swagger';
-import {CommandBus} from '@nestjs/cqrs';
+import { Body, Controller, Post, Res } from '@nestjs/common';
+import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
+import {CommandBus, QueryBus} from '@nestjs/cqrs';
+import { FastifyReply } from 'fastify';
 import {ResponseDto} from 'src/common/responseDto/response.dto';
-import {CreateAdminDto} from './dto/create-admin.dto';
-import { CreateUserDto } from './dto/create-user.dto';
-import { CreateAdminCommand } from './application/command/create-admin.command';
-import { CreateUserCommand } from './application/command/create-user.command';
+import {CreateAdminDto, CreateUserDto, LoginUserDto} from './dto';
+import { CreateUserCommand, CreateAdminCommand, LoginQuery } from './application';
 
 @ApiTags('AUTH')
 @Controller('auth')
 export class AuthController {
   constructor(
     private readonly commandBus: CommandBus,
+    private readonly queryBus: QueryBus,
   ) {}
 
   @ApiOkResponse({
@@ -48,5 +32,15 @@ export class AuthController {
   @Post('/register-user')
   async createUser(@Body() body: CreateUserDto) {
     return this.commandBus.execute(new CreateUserCommand(body));
+  }
+
+  @ApiOkResponse({
+    type: ResponseDto,
+    description: '성공',
+  })
+  @ApiOperation({summary: '로그인'})
+  @Post('/login')
+  async loginUser(@Body() body: LoginUserDto, @Res({passthrough: true}) reply: FastifyReply) {
+    return this.queryBus.execute(new LoginQuery(body, reply));
   }
 }
