@@ -29,12 +29,11 @@ export class LoginQueryHandler implements IQueryHandler<LoginQuery> {
       {
         id: user.id,
         isAdmin: user.isAdmin,
-        schoolId: user.school_id,
       },
-      // {
-      //   secret: config.JWT_ACCESS_TOKEN_SECRET,
-      //   expiresIn: config.JWT_ACCESS_TOKEN_EXPIRATION_TIME,
-      // }
+      {
+        secret: config.JWT_ACCESS_TOKEN_SECRET,
+        expiresIn: config.JWT_ACCESS_TOKEN_EXPIRATION_TIME,
+      }
     );
     // await this.cacheService.setCache(`USER:${user.id}`, access_token, 0);
 

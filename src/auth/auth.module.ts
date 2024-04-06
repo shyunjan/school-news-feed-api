@@ -1,5 +1,5 @@
 import {Module, Provider} from '@nestjs/common';
-import { JwtModule } from '@nestjs/jwt';
+import { JwtModule, JwtService } from '@nestjs/jwt';
 import {CqrsModule} from '@nestjs/cqrs';
 import { PassportModule } from '@nestjs/passport';
 import { PasswordModule } from 'src/libs/password.module';
@@ -13,8 +13,11 @@ import { AuthInjectionToken } from './Injection-token';
 import { AuthRepositoryImplement } from './infra/auth.repository.implement';
 import { CreateAdminCommandHandler, CreateUserCommandHandler, LoginQueryHandler } from './application';
 import { SchoolModule } from 'src/school/school.module';
+import { JwtStrategy } from './jwt.strategy';
 
 const application = [
+  JwtStrategy,
+  JwtService,
   CreateAdminCommandHandler,
   CreateUserCommandHandler,
   LoginQueryHandler,
@@ -52,7 +55,6 @@ const infrastructure: Provider[] = [
   ],
   controllers: [AuthController],
   providers: [ ...application, ...infrastructure ],
-  // exports: [AuthService, AuthRepository, JwtService],
-  exports: [],
+  exports: [JwtStrategy, JwtService],
 })
 export class AuthModule {}
