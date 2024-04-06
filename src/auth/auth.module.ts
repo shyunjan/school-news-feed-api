@@ -3,11 +3,16 @@ import { JwtModule } from '@nestjs/jwt';
 import {CqrsModule} from '@nestjs/cqrs';
 import { PassportModule } from '@nestjs/passport';
 import { PasswordModule } from 'src/libs/password.module';
+import {MongooseModule} from '@nestjs/mongoose';
+import {Schema} from 'mongoose';
+import { User, UserSchema } from './infra/user.entity';
+import { School, SchoolSchema } from 'src/school/infra/school.entity';
 import {config} from 'src/config/config';
 import { AuthController } from './auth.controller';
 import { AuthInjectionToken } from './Injection-token';
-import { UserRepositoryImplement } from './user.repository.implement';
+import { AuthRepositoryImplement } from './infra/auth.repository.implement';
 import { CreateAdminCommandHandler, CreateUserCommandHandler } from './application';
+import { SchoolModule } from 'src/school/school.module';
 
 const application = [
   // JwtStrategy,
@@ -21,8 +26,8 @@ const application = [
 
 const infrastructure: Provider[] = [
   {
-    provide: AuthInjectionToken.USER_REPOSITORY,
-    useClass: UserRepositoryImplement,
+    provide: AuthInjectionToken.AUTH_REPOSITORY,
+    useClass: AuthRepositoryImplement,
   },
 ];
 
@@ -36,7 +41,18 @@ const infrastructure: Provider[] = [
         expiresIn: config.JWT_ACCESS_TOKEN_EXPIRATION_TIME,
       },
     }),
+    MongooseModule.forFeatureAsync([
+      {
+        name: User.name,
+        useFactory: (): Schema => UserSchema,
+      },
+      {
+        name: School.name,
+        useFactory: (): Schema => SchoolSchema,
+      },
+    ]),
     PasswordModule,
+    SchoolModule,
   ],
   controllers: [AuthController],
   providers: [ ...application, ...infrastructure ],

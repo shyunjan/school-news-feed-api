@@ -1,5 +1,6 @@
 import {
   ArgumentsHost,
+  BadRequestException,
   ExceptionFilter,
   HttpException,
   HttpStatus,
@@ -10,6 +11,7 @@ import moment from 'moment';
 import {ResponseBodyType} from 'src/types';
 import {RESULT_CODE} from '../../constant';
 import CustomError from './custom-error';
+import { ValidationError } from 'class-validator';
 
 export default class AllExceptionsFilter implements ExceptionFilter {
   constructor(private readonly httpAdapterHost: HttpAdapterHost) {}
@@ -28,25 +30,35 @@ export default class AllExceptionsFilter implements ExceptionFilter {
       exception instanceof HttpException ||
       exception instanceof Error
     ) {
+      // if (exception instanceof HttpException) this.logger.debug(exception?.constraints[Object.keys(exception.constraints)[0]]);
       this.logger.error(exception.message, exception.stack);
     }
 
     const {httpAdapter} = this.httpAdapterHost;
     const ctx = host.switchToHttp();
 
-    let code: number, statusCode: number, message: string;
+    let code: number // 서비스 정의 코드
+    , statusCode: number // HTTP 상태 코드
+    , message: string = '' // 상세 에러 메시지
+    , error: string; // Error 클래스 메시지
     if (exception instanceof CustomError) {
       code = exception.code;
       statusCode = exception.status;
-      message = exception.message;
+      error = exception.message;
+    } else if (exception instanceof BadRequestException) {
+      code = RESULT_CODE.VALIDATION_ERROR;
+      statusCode = exception.getStatus();
+      const response = exception.getResponse() as { message: {[type: string]: string}[] };
+      message = JSON.stringify(response.message);
+      error = exception.message;
     } else if (exception instanceof HttpException) {
       code = RESULT_CODE.UNKNOWN_ERROR;
       statusCode = exception.getStatus();
-      message = exception.message;
+      error = exception.message;
     } else {
       code = RESULT_CODE.UNKNOWN_ERROR;
       statusCode = HttpStatus.INTERNAL_SERVER_ERROR;
-      message = exception instanceof Error ? exception.message : '';
+      error = exception instanceof Error ? exception.message : '';
     }
 
     const responseBody: ResponseBodyType = {
@@ -54,6 +66,7 @@ export default class AllExceptionsFilter implements ExceptionFilter {
       statusCode,
       timestamp: moment().utc().format('YYYY-MM-DD HH:mm:ss'),
       message,
+      error
     };
 
     httpAdapter.reply(ctx.getResponse(), responseBody, statusCode);

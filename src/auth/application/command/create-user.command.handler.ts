@@ -1,35 +1,29 @@
-import {Inject} from '@nestjs/common';
+import {Inject, Logger} from '@nestjs/common';
 import {CommandHandler, ICommandHandler} from '@nestjs/cqrs';
-import {User} from 'src/auth/domain/user';
-import {UserFactory} from 'src/auth/domain/user.factory';
-import {UserRepository} from 'src/auth/domain/user.repository';
-import {InjectionToken} from 'src/auth/application/Injection-token';
+import { AuthInjectionToken } from 'src/auth/Injection-token';
+import { AuthRepositoryImplement } from 'src/auth/infra/auth.repository.implement';
 import {PasswordGenerator, PASSWORD_GENERATOR} from 'src/libs/password.module';
-import {CreateUserCommand} from './create-user.command';
-import CustomError from 'src/common/error/custom-error';
-import {RESULT_CODE} from 'src/constant';
+import { CreateUserCommand } from './create-user.command';
 
 @CommandHandler(CreateUserCommand)
 export class CreateUserCommandHandler
-  implements ICommandHandler<CreateUserCommand, User | null>
+  implements ICommandHandler<CreateUserCommand>
 {
-  @Inject(InjectionToken.USER_REPOSITORY)
-  private readonly userRepository: UserRepository;
-  @Inject() private readonly userFactory: UserFactory;
-  @Inject(PASSWORD_GENERATOR)
-  private readonly passwordGenerator: PasswordGenerator;
+  private readonly logger = new Logger(this.constructor.name);
 
-  async execute(command: CreateUserCommand): Promise<User | null> {
+  constructor(
+    @Inject(AuthInjectionToken.AUTH_REPOSITORY)
+    private readonly authRepository: AuthRepositoryImplement, 
+    @Inject(PASSWORD_GENERATOR)
+    private readonly passwordGenerator: PasswordGenerator,
+  ) {}
+
+  async execute(command: CreateUserCommand) {
     const {body} = command;
-    const {phone, password} = body;
-    if (!phone) throw new CustomError(RESULT_CODE.AUTH_NEED_PHONE_NUMBER);
-    if (!password)
-      throw new CustomError(RESULT_CODE.AUTH_INVALID_USER_PASSWORD);
-    const hash = await this.passwordGenerator.generateHash(password);
-    const user = this.userFactory.create({
-      ...body,
-      password: hash,
-    });
-    return this.userRepository.save(user);
+    const {password} = body;
+    const passwdHash = await this.passwordGenerator.generateHash(password);
+    body.password = passwdHash;
+    
+    return this.authRepository.createUser({ ...body, isAdmin: false });
   }
 }
