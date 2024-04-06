@@ -12,15 +12,16 @@ export class NewsController {
     // private readonly queryBus: QueryBus,
   ) {}
 
-  @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   @ApiOkResponse({
     type: ResponseDto,
     description: '성공',
   })
   @ApiOperation({summary: '[관리자 로그인 필요] 뉴스 등록'})
+  @UseGuards(JwtAuthGuard)
   @Post('/register-news')
-  async createNews() {
+  async createNews(@Body() body: any) {
+    console.debug(`body = ${JSON.stringify(body)}`);
     return 'Your session is verfied.';
   }
 

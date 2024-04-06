@@ -55,6 +55,6 @@ const infrastructure: Provider[] = [
   ],
   controllers: [AuthController],
   providers: [ ...application, ...infrastructure ],
-  exports: [JwtStrategy, JwtService],
+  exports: [JwtStrategy, JwtService, MongooseModule],
 })
 export class AuthModule {}

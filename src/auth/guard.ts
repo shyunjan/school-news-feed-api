@@ -1,19 +1,26 @@
 import {
   ExecutionContext,
+  Inject,
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
 import {JwtService} from '@nestjs/jwt';
 import {AuthGuard} from '@nestjs/passport';
 // import {CacheService} from 'src/cache/service/cache.service';
-import {LoginType} from 'src/types/login.type';
 import {PayloadType} from './jwt.strategy';
+import { AuthInjectionToken } from './Injection-token';
+import { AuthRepositoryImplement } from './infra/auth.repository.implement';
+import { User } from './infra/user.entity';
+import CustomError from 'src/common/error/custom-error';
+import {RESULT_CODE} from 'src/constant';
 
 @Injectable()
 export class JwtAuthGuard extends AuthGuard('jwt') {
   constructor(
     // private readonly cacheService: CacheService,
-    private readonly jwtService: JwtService
+    private readonly jwtService: JwtService,
+    @Inject(AuthInjectionToken.AUTH_REPOSITORY)
+    private readonly authRepository: AuthRepositoryImplement, 
   ) {
     super();
   }
@@ -21,12 +28,20 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
     let token = request.headers['authorization'];
-    /* 아래 코드는 제일 마지막의 super.canActivate(context) ... 부분과 상충되기 때문에 사용하면 안된다.*/
-    // if (token && token.startsWith('Bearer ')) token = token.slice(7);
+    if (token && token.startsWith('Bearer ')) token = token.slice(7);
     if (!token) throw new UnauthorizedException();
 
-    const test = this.jwtService.decode(token);
-    const payload = test as PayloadType;
+    const payload = this.jwtService.decode(token) as PayloadType;
+    delete payload['iat']; delete payload['exp']; // 토큰 관련 메타정보를 삭제
+    const session: Omit<User, "password"> = { ...payload };
+
+    if (session.isAdmin) {
+      const existUser: Partial<User> = await this.authRepository.findUserById(session.id);
+      if (!existUser) throw new CustomError(RESULT_CODE.NOT_FOUND_USER);
+      session.school_id = existUser.school_id;
+    }
+
+    request.body.session = session;
     
     // const token_in_redis = await this.cacheService.getCache(
     //   `${payload.type.toUpperCase()}:${payload.id}`
@@ -35,7 +50,6 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
     // if (token !== token_in_redis)
     //   throw new CustomError(RESULT_CODE.AUTH_OTHER_LOGGED_IN);
     
-    /* 추출한 토큰값(위에서 token 변수)과 실제 request받은 context를 비교하는 부분이다 */
     return super.canActivate(context) as Promise<boolean>;
   }
 }

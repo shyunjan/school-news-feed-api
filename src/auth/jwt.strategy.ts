@@ -29,12 +29,10 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
 
   async validate(payload: PayloadType) {
     const {id} = payload;
-    const existUser = await this.authRepository.findUserById(id);
+    const existUser: Partial<User> = await this.authRepository.findUserById(id);
     if (!existUser) throw new CustomError(RESULT_CODE.NOT_FOUND_USER);
 
-    const user: Omit<User, "password"> = { ...existUser };
-    console.debug(`user = ${JSON.stringify(user)}`);
-    
-    return user;
+    existUser.password = '';
+    return existUser;
   }
 }
