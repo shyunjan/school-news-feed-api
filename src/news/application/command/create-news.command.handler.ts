@@ -1,6 +1,5 @@
-import { Inject, Logger } from "@nestjs/common";
+import { Inject } from "@nestjs/common";
 import { CommandHandler, ICommandHandler } from "@nestjs/cqrs";
-import { ObjectId } from "mongoose";
 import { CreateNewsCommand } from "./create-news.command";
 import { NewsInjectionToken } from "src/news/Injection-token";
 import { NewsRepositoryImplement } from "src/news/infra/news.repository.implement";

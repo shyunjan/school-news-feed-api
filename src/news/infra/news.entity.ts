@@ -4,11 +4,11 @@ import { CreateNewsDto } from "../dto";
 
 @Schema({ collection: "news" })
 export class NewsEntity extends CreateNewsDto {
-  @Prop({ type: SchemaTypes.ObjectId, index: true, required: false })
+  @Prop({ type: SchemaTypes.ObjectId, index: true, required: true })
   school_id?: ObjectId; // 학교 번호. 뉴스를 생성한 관리자의 세션 정보로부터 입력받는다
 
   @Prop({ type: SchemaTypes.String, required: true })
-  admin_id: string; // 뉴스를 생성한 관리자 아이디
+  admin_id: string; // 뉴스를 생성한 관리자 아이디. 세션 정보로부터 입력받는다
 }
 
 export type NewsDocument = NewsEntity & Document;

@@ -30,8 +30,6 @@ export class NewsController {
   @UseGuards(JwtAuthGuard)
   @Post("/register-news")
   async createNews(@User() session: SessionDto, @Body() body: CreateNewsDto) {
-    console.debug(`body = ${JSON.stringify(body)}`);
-    console.debug(`session = ${JSON.stringify(session)}`);
     return this.commandBus.execute(new CreateNewsCommand(body, session));
   }
 }
