@@ -17,7 +17,6 @@ import {
 } from "./application";
 import { SchoolModule } from "src/school/school.module";
 import { JwtStrategy } from "./jwt.strategy";
-import { NewsModule } from "src/news/news.module";
 
 const application = [
   JwtStrategy,
@@ -37,7 +36,6 @@ const infrastructure: Provider[] = [
 @Module({
   imports: [
     CqrsModule,
-    // PassportModule.register({defaultStrategy: 'jwt', session: false}),
     JwtModule.register({
       secret: config.JWT_ACCESS_TOKEN_SECRET,
       signOptions: {

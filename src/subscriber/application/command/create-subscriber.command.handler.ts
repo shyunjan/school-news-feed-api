@@ -1,8 +1,5 @@
 import { Inject } from "@nestjs/common";
 import { CommandHandler, ICommandHandler } from "@nestjs/cqrs";
-import { NewsInjectionToken } from "src/news/Injection-token";
-import CustomError from "src/common/error/custom-error";
-import { RESULT_CODE } from "src/constant";
 import { SubscriberRepositoryImplement } from "src/subscriber/infra/subscriber.repository.implement";
 import { SubscriberInjectionToken } from "src/subscriber/Injection-token";
 import { CreateSubscriberCommand } from "..";
@@ -21,6 +18,8 @@ export class CreateSubscriberCommandHandler
       schoolId: school_id,
       session: { id: subscriber_id },
     } = command;
+
+    /* TODO: 중복 구독 여부를 체크할 것 */
 
     return this.subscriberRepository.createSubscriber({
       school_id,

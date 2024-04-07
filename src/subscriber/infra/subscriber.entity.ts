@@ -4,11 +4,13 @@ import { CreateSubscriberDto } from "../dto";
 
 @Schema({ collection: "subscriber" })
 export class SubscriberEntity extends CreateSubscriberDto {
-  @Prop({ type: SchemaTypes.String, required: true })
+  @Prop({ type: SchemaTypes.String, index: true, required: true })
   subscriber_id: string; // 구독자 아이디. 세션 정보로부터 입력받는다
 
   @Prop({ type: SchemaTypes.Date, required: true })
   date: Date; // 구독일자
+
+  // TODO: 구독취소일자
 }
 
 export type SubscriberDocument = SubscriberEntity & Document;

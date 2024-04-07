@@ -6,10 +6,15 @@ import { Schema } from "mongoose";
 import { SubscriberNewsController } from "./subscriber.controller";
 import { AuthModule } from "src/auth/auth.module";
 import { SubscriberInjectionToken } from "./Injection-token";
-import { SubscriberEntity, SubscriberSchema } from "./infra/subscriber.entity";
+import {
+  SubscriberEntity,
+  SubscriberSchema,
+  SubscriberRepositoryImplement,
+  SubscriberNewsEntity,
+  SubscriberNewsSchema,
+} from "./infra";
 import { AuthInjectionToken } from "src/auth/Injection-token";
 import { AuthRepositoryImplement } from "src/auth/infra/auth.repository.implement";
-import { SubscriberRepositoryImplement } from "./infra/subscriber.repository.implement";
 import { CreateSubscriberCommandHandler } from "./application";
 
 const application = [JwtService, CreateSubscriberCommandHandler];
@@ -33,6 +38,10 @@ const infrastructure: Provider[] = [
       {
         name: SubscriberEntity.name,
         useFactory: (): Schema => SubscriberSchema,
+      },
+      {
+        name: SubscriberNewsEntity.name,
+        useFactory: (): Schema => SubscriberNewsSchema,
       },
     ]),
   ],
