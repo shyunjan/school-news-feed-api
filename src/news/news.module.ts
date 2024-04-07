@@ -10,9 +10,9 @@ import { NewsRepositoryImplement } from "./infra/news.repository.implement";
 import { NewsEntity, NewsSchema } from "./infra/news.entity";
 import { AuthInjectionToken } from "src/auth/Injection-token";
 import { AuthRepositoryImplement } from "src/auth/infra/auth.repository.implement";
-import { CreateNewsCommandHandler } from "./application";
+import { CreateNewsCommandHandler, NewsQueryHandler } from "./application";
 
-const application = [JwtService, CreateNewsCommandHandler];
+const application = [JwtService, CreateNewsCommandHandler, NewsQueryHandler];
 
 const infrastructure: Provider[] = [
   {

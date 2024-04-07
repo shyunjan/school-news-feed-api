@@ -24,7 +24,6 @@ export class CreateSubscriberCommandHandler
     return this.subscriberRepository.createSubscriber({
       school_id,
       subscriber_id,
-      date: new Date(),
     });
   }
 }

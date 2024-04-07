@@ -21,6 +21,10 @@ export class CreateNewsCommandHandler
       session: { id: admin_id, isAdmin, school_id },
     } = command;
     if (!isAdmin) throw new CustomError(RESULT_CODE.AUTH_NEED_ADMIN);
-    return this.newsRepository.createNews({ ...body, school_id, admin_id });
+    return this.newsRepository.createNews({
+      ...body,
+      school_id,
+      admin_id,
+    });
   }
 }

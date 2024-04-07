@@ -1,1 +1,1 @@
-export { CreateNewsDto } from "./create-news.dto";
+export { CreateNewsDto, CreateNewsType } from "./create-news.dto";

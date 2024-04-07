@@ -12,5 +12,7 @@ export class CreateSubscriberDto {
   })
   @IsNotEmpty()
   @Prop({ type: SchemaTypes.ObjectId, index: true, required: true })
-  school_id?: ObjectId; // 학교 번호
+  school_id: ObjectId; // 학교 번호
 }
+
+export interface CreateSubscriberType extends CreateSubscriberDto {}

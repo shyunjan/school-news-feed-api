@@ -1,1 +1,4 @@
-export { CreateSubscriberDto } from "./create-subscriber.dto";
+export {
+  CreateSubscriberDto,
+  CreateSubscriberType,
+} from "./create-subscriber.dto";

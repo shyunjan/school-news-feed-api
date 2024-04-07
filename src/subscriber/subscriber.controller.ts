@@ -10,6 +10,7 @@ import {
   ApiOperation,
   ApiTags,
   ApiBearerAuth,
+  ApiQuery,
 } from "@nestjs/swagger";
 import { CommandBus, QueryBus } from "@nestjs/cqrs";
 import { ObjectId } from "mongoose";
@@ -34,8 +35,14 @@ export class SubscriberNewsController {
     description: "성공",
   })
   @ApiOperation({ summary: "[로그인 필요] 구독 정보(학교) 등록" })
+  @ApiQuery({
+    name: "school_id",
+    required: true,
+    type: "string",
+    description: "학교 번호",
+  })
   @UseGuards(JwtAuthGuard)
-  @Post("/register-subscriber")
+  @Post("/register")
   async createSubscriber(
     @Query("school_id") school_id: ObjectId,
     @User() session: SessionDto
