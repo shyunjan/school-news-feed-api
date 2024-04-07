@@ -1,19 +1,23 @@
-import {Module, Provider} from '@nestjs/common';
-import { JwtModule, JwtService } from '@nestjs/jwt';
-import {CqrsModule} from '@nestjs/cqrs';
-import { PassportModule } from '@nestjs/passport';
-import { PasswordModule } from 'src/libs/password.module';
-import {MongooseModule} from '@nestjs/mongoose';
-import {Schema} from 'mongoose';
-import { User, UserSchema } from './infra/user.entity';
-import { School, SchoolSchema } from 'src/school/infra/school.entity';
-import {config} from 'src/config/config';
-import { AuthController } from './auth.controller';
-import { AuthInjectionToken } from './Injection-token';
-import { AuthRepositoryImplement } from './infra/auth.repository.implement';
-import { CreateAdminCommandHandler, CreateUserCommandHandler, LoginQueryHandler } from './application';
-import { SchoolModule } from 'src/school/school.module';
-import { JwtStrategy } from './jwt.strategy';
+import { Module, Provider } from "@nestjs/common";
+import { JwtModule, JwtService } from "@nestjs/jwt";
+import { CqrsModule } from "@nestjs/cqrs";
+import { PasswordModule } from "src/libs/password.module";
+import { MongooseModule } from "@nestjs/mongoose";
+import { Schema } from "mongoose";
+import { UserEntity, UserSchema } from "./infra/user.entity";
+import { SchoolEntity, SchoolSchema } from "src/school/infra/school.entity";
+import { config } from "src/config/config";
+import { AuthController } from "./auth.controller";
+import { AuthInjectionToken } from "./Injection-token";
+import { AuthRepositoryImplement } from "./infra/auth.repository.implement";
+import {
+  CreateAdminCommandHandler,
+  CreateUserCommandHandler,
+  LoginQueryHandler,
+} from "./application";
+import { SchoolModule } from "src/school/school.module";
+import { JwtStrategy } from "./jwt.strategy";
+import { NewsModule } from "src/news/news.module";
 
 const application = [
   JwtStrategy,
@@ -42,11 +46,11 @@ const infrastructure: Provider[] = [
     }),
     MongooseModule.forFeatureAsync([
       {
-        name: User.name,
+        name: UserEntity.name,
         useFactory: (): Schema => UserSchema,
       },
       {
-        name: School.name,
+        name: SchoolEntity.name,
         useFactory: (): Schema => SchoolSchema,
       },
     ]),
@@ -54,7 +58,7 @@ const infrastructure: Provider[] = [
     SchoolModule,
   ],
   controllers: [AuthController],
-  providers: [ ...application, ...infrastructure ],
+  providers: [...application, ...infrastructure],
   exports: [JwtStrategy, JwtService, MongooseModule],
 })
 export class AuthModule {}

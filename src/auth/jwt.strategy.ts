@@ -1,12 +1,12 @@
-import {ExtractJwt, Strategy} from 'passport-jwt';
-import {PassportStrategy} from '@nestjs/passport';
-import {Inject, Injectable} from '@nestjs/common';
-import CustomError from 'src/common/error/custom-error';
-import {RESULT_CODE} from 'src/constant';
-import {config} from 'src/config/config';
-import { AuthRepositoryImplement } from './infra/auth.repository.implement';
-import { AuthInjectionToken } from './Injection-token';
-import { User } from './infra/user.entity';
+import { ExtractJwt, Strategy } from "passport-jwt";
+import { PassportStrategy } from "@nestjs/passport";
+import { Inject, Injectable } from "@nestjs/common";
+import CustomError from "src/common/error/custom-error";
+import { RESULT_CODE } from "src/constant";
+import { config } from "src/config/config";
+import { AuthRepositoryImplement } from "./infra/auth.repository.implement";
+import { AuthInjectionToken } from "./Injection-token";
+import { SessionType, UserEntity } from "./infra/user.entity";
 
 export type PayloadType = {
   id: string;
@@ -17,7 +17,7 @@ export type PayloadType = {
 export class JwtStrategy extends PassportStrategy(Strategy) {
   constructor(
     @Inject(AuthInjectionToken.AUTH_REPOSITORY)
-    private readonly authRepository: AuthRepositoryImplement, 
+    private readonly authRepository: AuthRepositoryImplement
   ) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
@@ -28,11 +28,14 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   }
 
   async validate(payload: PayloadType) {
-    const {id} = payload;
-    const existUser: Partial<User> = await this.authRepository.findUserById(id);
+    const { id } = payload;
+    const existUser: Partial<UserEntity> =
+      await this.authRepository.findUserById(id);
     if (!existUser) throw new CustomError(RESULT_CODE.NOT_FOUND_USER);
 
-    existUser.password = '';
-    return existUser;
+    delete payload["iat"]; // 토큰 관련 메타정보를 삭제
+    delete payload["exp"];
+    const session: SessionType = { ...payload, school_id: existUser.school_id };
+    return session;
   }
 }
