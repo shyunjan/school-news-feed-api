@@ -10,7 +10,7 @@ import { SessionType, UserEntity } from "./infra/user.entity";
 
 export type PayloadType = {
   id: string;
-  isAdmin: boolean;
+  is_admin: boolean;
 };
 
 @Injectable()

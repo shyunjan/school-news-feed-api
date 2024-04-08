@@ -8,7 +8,7 @@ export class UserEntity extends CreateUserDto {
   // _id!: string; // 사용자번호
 
   @Prop({ type: SchemaTypes.Boolean, required: true })
-  isAdmin: boolean = false; // 관리자 / 일반유저(학생) 여부
+  is_admin: boolean = false; // 관리자 / 일반유저(학생) 여부
 
   @Prop({ type: SchemaTypes.ObjectId, required: false })
   school_id?: ObjectId; // 관리자일 경우 관리 학교 번호

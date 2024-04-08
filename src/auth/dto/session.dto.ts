@@ -9,7 +9,7 @@ export class SessionDto
   implements SessionType
 {
   @IsBoolean()
-  isAdmin: boolean;
+  is_admin: boolean;
 
   school_id?: Schema.Types.ObjectId | undefined;
 }

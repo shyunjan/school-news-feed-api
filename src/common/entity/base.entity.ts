@@ -8,7 +8,7 @@ export class BaseEntity {
     required: false,
     default: new Date(),
   })
-  create_date?: Date;
+  create_at?: Date;
 
   @Prop({
     type: SchemaTypes.Date,
@@ -16,8 +16,8 @@ export class BaseEntity {
     required: false,
     default: new Date(),
   })
-  update_date?: Date;
+  update_at?: Date;
 
   @Prop({ type: SchemaTypes.Date, index: false, required: false })
-  delete_date?: Date;
+  delete_at?: Date;
 }

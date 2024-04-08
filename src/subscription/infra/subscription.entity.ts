@@ -1,12 +1,12 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { Document, SchemaTypes, ObjectId } from "mongoose";
-import { CreateSubscriberDto, CreateSubscriberType } from "../dto";
+import { CreateSubscriptionDto, CreateSubscriptionType } from "../dto";
 import { BaseEntity } from "src/common/entity/base.entity";
 
-@Schema({ collection: "subscriber" })
-export class SubscriberEntity
+@Schema({ collection: "subscription" })
+export class SubscriptionEntity
   extends BaseEntity
-  implements CreateSubscriberType
+  implements CreateSubscriptionType
 {
   @Prop({ type: SchemaTypes.ObjectId, index: true, required: true })
   school_id: ObjectId; // 학교 번호
@@ -15,6 +15,7 @@ export class SubscriberEntity
   subscriber_id: string; // 구독자 아이디. 세션 정보로부터 입력받는다
 }
 
-export type SubscriberDocument = SubscriberEntity & Document;
-export const SubscriberSchema = SchemaFactory.createForClass(SubscriberEntity);
-// SubscriberSchema.index({'menu_list.group_id': 1}); // Nested Object의 필드에 인덱스를 거는 법
+export type SubscriptionDocument = SubscriptionEntity & Document;
+export const SubscriptionSchema =
+  SchemaFactory.createForClass(SubscriptionEntity);
+// SubscriptionSchema.index({'menu_list.group_id': 1}); // Nested Object의 필드에 인덱스를 거는 법

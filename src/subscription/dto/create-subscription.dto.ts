@@ -3,7 +3,7 @@ import { IsNotEmpty } from "class-validator";
 import { Prop } from "@nestjs/mongoose";
 import { SchemaTypes, ObjectId } from "mongoose";
 
-export class CreateSubscriberDto {
+export class CreateSubscriptionDto {
   @ApiProperty({
     required: true,
     type: "string",
@@ -15,4 +15,4 @@ export class CreateSubscriberDto {
   school_id: ObjectId; // 학교 번호
 }
 
-export interface CreateSubscriberType extends CreateSubscriberDto {}
+export interface CreateSubscriptionType extends CreateSubscriptionDto {}

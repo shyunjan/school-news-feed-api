@@ -18,12 +18,11 @@ import { ResponseDto } from "src/common/responseDto/response.dto";
 import { JwtAuthGuard } from "src/auth/guard";
 import { User } from "src/common/decorators/user.decorator";
 import { SessionDto } from "src/auth/dto";
-import { CreateSubscriberDto } from "./dto";
-import { CreateSubscriberCommand } from "./application";
+import { CreateSubscriptionCommand } from "./application";
 
-@ApiTags("SUBSCRIBER")
-@Controller("subscriber")
-export class SubscriberNewsController {
+@ApiTags("SUBSCRIPTION")
+@Controller("subscription")
+export class SubscriptionNewsController {
   constructor(
     private readonly commandBus: CommandBus,
     private readonly queryBus: QueryBus
@@ -43,14 +42,14 @@ export class SubscriberNewsController {
   })
   @UseGuards(JwtAuthGuard)
   @Post("/register")
-  async createSubscriber(
+  async createSubscription(
     @Query("school_id") school_id: ObjectId,
     @User() session: SessionDto
   ) {
     console.debug(`school_id = ${JSON.stringify(school_id)}`);
     console.debug(`session = ${JSON.stringify(session)}`);
     return this.commandBus.execute(
-      new CreateSubscriberCommand(school_id, session)
+      new CreateSubscriptionCommand(school_id, session)
     );
   }
 }

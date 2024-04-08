@@ -12,7 +12,7 @@ import { PasswordModule } from "./libs/password.module";
 import { config } from "src/config/config";
 import { AuthModule } from "./auth/auth.module";
 import { NewsModule } from "./news/news.module";
-import { SubscriberModule } from "./subscriber/subscriber.module";
+import { SubscriptionModule } from "./subscription/subscription.module";
 
 @Global()
 @Module({
@@ -21,7 +21,7 @@ import { SubscriberModule } from "./subscriber/subscriber.module";
     PasswordModule,
     AuthModule,
     NewsModule,
-    SubscriberModule,
+    SubscriptionModule,
   ],
   controllers: [AppController],
 })

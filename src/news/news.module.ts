@@ -11,8 +11,18 @@ import { NewsEntity, NewsSchema } from "./infra/news.entity";
 import { AuthInjectionToken } from "src/auth/Injection-token";
 import { AuthRepositoryImplement } from "src/auth/infra/auth.repository.implement";
 import { CreateNewsCommandHandler, NewsQueryHandler } from "./application";
+import { SubscriptionModule } from "src/subscription/subscription.module";
+import { NewsFactory } from "./domain";
+import { CreateSubscriptionNewsEventHandler } from "./application";
+import { SubscriptionInjectionToken } from "src/subscription/Injection-token";
+import { SubscriptionRepositoryImplement } from "src/subscription/infra";
 
-const application = [JwtService, CreateNewsCommandHandler, NewsQueryHandler];
+const application = [
+  JwtService,
+  CreateNewsCommandHandler,
+  NewsQueryHandler,
+  CreateSubscriptionNewsEventHandler,
+];
 
 const infrastructure: Provider[] = [
   {
@@ -23,7 +33,13 @@ const infrastructure: Provider[] = [
     provide: NewsInjectionToken.NEWS_REPOSITORY,
     useClass: NewsRepositoryImplement,
   },
+  {
+    provide: SubscriptionInjectionToken.SUBSCRIPTION_REPOSITORY,
+    useClass: SubscriptionRepositoryImplement,
+  },
 ];
+
+const domain: Provider[] = [NewsFactory];
 
 @Module({
   imports: [
@@ -35,8 +51,9 @@ const infrastructure: Provider[] = [
         useFactory: (): Schema => NewsSchema,
       },
     ]),
+    SubscriptionModule,
   ],
   controllers: [NewsController],
-  providers: [...application, ...infrastructure],
+  providers: [...application, ...infrastructure, ...domain],
 })
 export class NewsModule {}
