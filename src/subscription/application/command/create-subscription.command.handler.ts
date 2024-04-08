@@ -19,7 +19,9 @@ export class CreateSubscriptionCommandHandler
       session: { id: subscriber_id },
     } = command;
 
-    /* TODO: 중복 구독 여부를 체크할 것 */
+    /* TODO: 해당 학교 존재 여부 체크 */
+
+    /* TODO: 중복 구독 여부 체크 */
 
     return this.subscriptionRepository.createSubscription({
       school_id,

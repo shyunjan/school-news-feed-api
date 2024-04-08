@@ -6,13 +6,16 @@ import {
   SubscriptionEntity,
   SubscriptionDocument,
   SubscriptionNewsEntity,
+  SubscriptionNewsDocument,
 } from ".";
 
 export class SubscriptionRepositoryImplement {
   private readonly logger = new Logger(this.constructor.name);
   constructor(
     @InjectModel(SubscriptionEntity.name)
-    private subscription: Model<SubscriptionDocument>
+    private subscription: Model<SubscriptionDocument>,
+    @InjectModel(SubscriptionNewsEntity.name)
+    private subscriptionNews: Model<SubscriptionNewsDocument>
   ) {}
 
   async createSubscription(
@@ -24,7 +27,15 @@ export class SubscriptionRepositoryImplement {
     return subscriptionDoc;
   }
 
-  async createSubscriptionNews(entities: SubscriptionNewsEntity[]) {
-    this.logger.debug(`entities = ${JSON.stringify(entities)}`);
+  async createSubscriptionNews(
+    entities: SubscriptionNewsEntity[]
+  ): Promise<SubscriptionNewsDocument[]> {
+    return (await this.subscriptionNews.insertMany(entities)).map((doc) =>
+      doc.toObject()
+    ) as SubscriptionNewsDocument[];
+  }
+
+  async updateSubscriptionNews(newsId: ObjectId) {
+    return this.subscriptionNews.updateMany({ is_read: false });
   }
 }

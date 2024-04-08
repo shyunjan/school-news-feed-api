@@ -4,11 +4,19 @@ import { Model, ObjectId, PipelineStage } from "mongoose";
 import { NewsEntity, NewsDocument } from "./news.entity";
 import { News, NewsFactory } from "../domain";
 import { SubscriptionNewsEntity } from "src/subscription/infra";
+import { CreateNewsDto } from "../dto";
+import CustomError from "src/common/error/custom-error";
+import { RESULT_CODE } from "src/constant";
 
 export class NewsRepositoryImplement {
   private readonly logger = new Logger(this.constructor.name);
   @InjectModel(NewsEntity.name) private news: Model<NewsDocument>;
   @Inject() private readonly newsFactory: NewsFactory;
+
+  async findNewsOne(newsId: ObjectId): Promise<News | null> {
+    const newsDoc = (await this.news.findById(newsId))?.toObject();
+    return newsDoc ? this.entityToModel(newsDoc) : null;
+  }
 
   async createNews(news: NewsEntity): Promise<News | null> {
     const newsDoc: NewsDocument = new this.news(news);
@@ -52,6 +60,17 @@ export class NewsRepositoryImplement {
     return (await this.news.aggregate(
       search_stages
     )) as SubscriptionNewsEntity[];
+  }
+
+  async updateNews(newsId: ObjectId, news: CreateNewsDto) {
+    const updateResult = await this.news.updateOne(
+      { _id: newsId },
+      { ...news, update_at: new Date() }
+    );
+    if (!updateResult.modifiedCount)
+      throw new CustomError(RESULT_CODE.FAIL_TO_UPDATE_NEWS);
+    this.logger.debug(`saved news ID = ${newsId}`);
+    return this.findNewsOne(newsId);
   }
 
   private entityToModel(entity: NewsEntity): News {

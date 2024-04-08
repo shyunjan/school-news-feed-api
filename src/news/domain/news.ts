@@ -1,7 +1,7 @@
 import { Inject } from "@nestjs/common";
 import { AggregateRoot, EventPublisher } from "@nestjs/cqrs";
 import { ObjectId } from "mongoose";
-import { CreateSubscriptionNewsEvent } from "./event/create-subscription-news.event";
+import { CreateSubscriptionNewsEvent, UpdateSubscriptionNewsEvent } from ".";
 
 export type NewsEssentialProperties = Readonly<
   Required<{
@@ -24,7 +24,8 @@ export type NewsProperties = NewsEssentialProperties & NewsOptionalProperties;
 
 export interface News {
   createSubscriptionNews: () => void;
-  updateNews: (newsId: ObjectId) => void;
+  updateSubscriptionNews: () => void;
+  getSchoolId: () => ObjectId;
 }
 
 export class NewsImplement extends AggregateRoot implements News {
@@ -46,7 +47,11 @@ export class NewsImplement extends AggregateRoot implements News {
     this.apply(new CreateSubscriptionNewsEvent(this._id));
   }
 
-  updateNews(newsId: ObjectId) {
-    // this.apply(new UpdateNewsEvent(this.id));
+  updateSubscriptionNews() {
+    this.apply(new UpdateSubscriptionNewsEvent(this._id));
+  }
+
+  getSchoolId() {
+    return this.school_id;
   }
 }

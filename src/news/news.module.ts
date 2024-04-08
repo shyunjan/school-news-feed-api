@@ -10,7 +10,12 @@ import { NewsRepositoryImplement } from "./infra/news.repository.implement";
 import { NewsEntity, NewsSchema } from "./infra/news.entity";
 import { AuthInjectionToken } from "src/auth/Injection-token";
 import { AuthRepositoryImplement } from "src/auth/infra/auth.repository.implement";
-import { CreateNewsCommandHandler, NewsQueryHandler } from "./application";
+import {
+  CreateNewsCommandHandler,
+  NewsQueryHandler,
+  UpdateNewsCommandHandler,
+  UpdateSubscriptionNewsEventHandler,
+} from "./application";
 import { SubscriptionModule } from "src/subscription/subscription.module";
 import { NewsFactory } from "./domain";
 import { CreateSubscriptionNewsEventHandler } from "./application";
@@ -20,8 +25,10 @@ import { SubscriptionRepositoryImplement } from "src/subscription/infra";
 const application = [
   JwtService,
   CreateNewsCommandHandler,
+  UpdateNewsCommandHandler,
   NewsQueryHandler,
   CreateSubscriptionNewsEventHandler,
+  UpdateSubscriptionNewsEventHandler,
 ];
 
 const infrastructure: Provider[] = [

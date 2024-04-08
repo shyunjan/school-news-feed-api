@@ -1,9 +1,18 @@
-import { Body, Controller, Get, Post, Query, UseGuards } from "@nestjs/common";
+import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  Put,
+  Query,
+  UseGuards,
+} from "@nestjs/common";
 import {
   ApiOkResponse,
   ApiOperation,
   ApiTags,
   ApiBearerAuth,
+  ApiQuery,
 } from "@nestjs/swagger";
 import { CommandBus, QueryBus } from "@nestjs/cqrs";
 import { ResponseDto } from "src/common/responseDto/response.dto";
@@ -11,7 +20,7 @@ import { JwtAuthGuard } from "src/auth/guard";
 import { CreateNewsDto } from "./dto";
 import { User } from "src/common/decorators/user.decorator";
 import { SessionDto } from "src/auth/dto";
-import { CreateNewsCommand, NewsQuery } from "./application";
+import { CreateNewsCommand, NewsQuery, UpdateNewsCommand } from "./application";
 import { ObjectId } from "mongoose";
 
 @ApiTags("NEWS")
@@ -32,6 +41,30 @@ export class NewsController {
   @Post("/register")
   async createNews(@User() session: SessionDto, @Body() body: CreateNewsDto) {
     return this.commandBus.execute(new CreateNewsCommand(body, session));
+  }
+
+  @ApiBearerAuth()
+  @ApiOkResponse({
+    type: ResponseDto,
+    description: "성공",
+  })
+  @ApiOperation({ summary: "[관리자 로그인 필요] 뉴스 수정" })
+  @ApiQuery({
+    name: "news_id",
+    required: true,
+    type: "string",
+    description: "뉴스번호",
+  })
+  @UseGuards(JwtAuthGuard)
+  @Put("/modify")
+  async updateNews(
+    @Query("news_id") newsId: ObjectId,
+    @User() session: SessionDto,
+    @Body() body: CreateNewsDto
+  ) {
+    return this.commandBus.execute(
+      new UpdateNewsCommand(newsId, body, session)
+    );
   }
 
   @ApiOkResponse({
