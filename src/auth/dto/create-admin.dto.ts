@@ -1,10 +1,10 @@
-import {ValidateNested} from 'class-validator';
-import { School } from 'src/school/infra/school.entity';
-import { CreateUserDto } from './create-user.dto';
-import { Type } from 'class-transformer';
+import { ValidateNested } from "class-validator";
+import { SchoolEntity } from "src/school/infra/school.entity";
+import { CreateUserDto } from "./create-user.dto";
+import { Type } from "class-transformer";
 
 export class CreateAdminDto extends CreateUserDto {
   @ValidateNested()
-  @Type(() => School)
-  school: School; // 학교관리자 담당 학교 정보
+  @Type(() => SchoolEntity)
+  school: SchoolEntity; // 학교관리자 담당 학교 정보
 }

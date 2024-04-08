@@ -32,6 +32,7 @@
     "posttest": "npm run lint"
   },
   "dependencies": {
+    "@fastify/cookie": "^9.3.1",
     "@fastify/static": "^6.9.0",
     "@nestjs/common": "^9.1.2",
     "@nestjs/core": "^9.1.2",
@@ -48,7 +49,7 @@
     "fastify": "^4.13.0",
     "moment": "^2.29.4",
     "moment-timezone": "^0.5.43",
-    "mongoose": "^7.4.1",
+    "mongoose": "^7.6.10",
     "nest-winston": "^1.7.0",
     "passport-jwt": "^4.0.1",
     "path": "^0.12.7",

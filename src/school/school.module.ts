@@ -1,9 +1,9 @@
-import {Module, Provider} from '@nestjs/common';
-import {MongooseModule} from '@nestjs/mongoose';
-import {Schema} from 'mongoose';
-import { School, SchoolSchema } from './infra/school.entity';
-import { SchoolRepositoryImplement } from './infra/school.repository.implement';
-import { SchoolInjectionToken } from './Injection-token';
+import { Module, Provider } from "@nestjs/common";
+import { MongooseModule } from "@nestjs/mongoose";
+import { Schema } from "mongoose";
+import { SchoolEntity, SchoolSchema } from "./infra/school.entity";
+import { SchoolRepositoryImplement } from "./infra/school.repository.implement";
+import { SchoolInjectionToken } from "./Injection-token";
 
 const infrastructure: Provider[] = [
   {
@@ -16,12 +16,12 @@ const infrastructure: Provider[] = [
   imports: [
     MongooseModule.forFeatureAsync([
       {
-        name: School.name,
+        name: SchoolEntity.name,
         useFactory: (): Schema => SchoolSchema,
       },
     ]),
   ],
-  providers: [ ...infrastructure ],
+  providers: [...infrastructure],
   exports: [...infrastructure],
 })
 export class SchoolModule {}

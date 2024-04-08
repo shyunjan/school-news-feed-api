@@ -1,4 +1,4 @@
-const RESULT_CODE = (<T extends {[key: string]: number}>(arg: T): T => arg)({
+const RESULT_CODE = (<T extends { [key: string]: number }>(arg: T): T => arg)({
   OK: 0, // 정상
 
   /* COMMON 에러 - 100XX */
@@ -31,12 +31,8 @@ const RESULT_CODE = (<T extends {[key: string]: number}>(arg: T): T => arg)({
   AUTH_NEED_PASSWORD: 12221,
   AUTH_NEED_ADMIN_ID: 12222,
 
-  /* VERIFICATION 관련 에러 - 104XX */
-  AUTH_NEED_PHONE_NUMBER: 10401,
-  VERIFICATION_TOKEN_NOT_FOUND: 10402,
-  AUTH_NEED_KEY: 10403,
-  NOT_FOUND_VERIFICATION: 10404,
-  ONLY_SMS_TYPE_VERIFICATION: 10405,
+  /* NEWS 관련 에러 - 104XX */
+  FAIL_TO_CREATE_NEWS: 10401,
 
   VALIDATION_ERROR: 99000, // Request Validation 오류
   UNKNOWN_ERROR: 99999, // 알 수 없는 오류
