@@ -117,7 +117,6 @@ export class SubscriptionRepositoryImplement {
         $unwind: "$news",
       },
     ];
-
     const searchStages: PipelineStage[] = [
       ...filterStages,
       ...lookupSubscriptionNewsStages,
@@ -130,6 +129,9 @@ export class SubscriptionRepositoryImplement {
           create_at: "$news.create_at",
           update_at: "$news.update_at",
         },
+      },
+      {
+        $sort: { _id: -1 },
       },
     ];
     return (await this.subscription.aggregate(searchStages)) as NewsWithId[];

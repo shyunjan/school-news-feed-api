@@ -28,6 +28,8 @@ export class CreateNewsCommandHandler
       ...body,
       school_id,
       admin_id,
+      create_at: new Date(),
+      update_at: new Date(),
     });
     if (!news) throw new CustomError(RESULT_CODE.FAIL_TO_CREATE_NEWS);
 

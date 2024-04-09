@@ -1,6 +1,6 @@
 import { Logger } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
-import { Model, ObjectId } from "mongoose";
+import { Model } from "mongoose";
 import { SchoolEntity, SchoolDocument } from "./school.entity";
 import { SchoolEntityWithId } from "src/types";
 
@@ -19,5 +19,12 @@ export class SchoolRepositoryImplement {
     this.logger.debug(`saved school ID = ${result._id}`);
 
     return result.toObject() as SchoolEntityWithId;
+  }
+
+  async findAllSchool() {
+    return this.school
+      .find({}, { _id: 1, region: 1, name: 1 })
+      .sort({ region: "asc", name: "asc" })
+      .lean();
   }
 }

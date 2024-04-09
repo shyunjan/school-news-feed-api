@@ -1,4 +1,4 @@
-import { Body, Controller, Post, UseGuards } from "@nestjs/common";
+import { Body, Controller, Get, Post, UseGuards } from "@nestjs/common";
 import {
   ApiOkResponse,
   ApiOperation,
@@ -11,7 +11,7 @@ import { JwtAuthGuard } from "src/auth/guard";
 import { CreateSchoolDto } from "./dto/create-school.dto";
 import { User } from "src/common/decorators/user.decorator";
 import { SessionDto } from "src/auth/dto";
-import { CreateSchoolCommand } from "../application/command/create-school.command";
+import { AllSchoolQuery, CreateSchoolCommand } from "../application";
 
 @ApiTags("SCHOOL")
 @Controller("school")
@@ -31,5 +31,15 @@ export class SchoolController {
   @Post("/register")
   async createNews(@User() session: SessionDto, @Body() body: CreateSchoolDto) {
     return this.commandBus.execute(new CreateSchoolCommand(body, session));
+  }
+
+  @ApiOkResponse({
+    type: ResponseDto,
+    description: "성공",
+  })
+  @ApiOperation({ summary: "전체 학교 리스트 조회" })
+  @Get("/query-all")
+  async findSubscriptionNews() {
+    return this.queryBus.execute(new AllSchoolQuery());
   }
 }

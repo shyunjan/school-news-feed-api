@@ -1,6 +1,6 @@
 import { Inject } from "@nestjs/common";
 import { CommandHandler, ICommandHandler } from "@nestjs/cqrs";
-import { CreateSchoolCommand } from "./create-school.command";
+import { CreateSchoolCommand } from "../";
 import CustomError from "src/common/error/custom-error";
 import { RESULT_CODE } from "src/constant";
 import { SchoolInjectionToken } from "src/school/Injection-token";
