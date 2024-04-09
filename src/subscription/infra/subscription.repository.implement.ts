@@ -8,6 +8,8 @@ import {
   SubscriptionNewsEntity,
   SubscriptionNewsDocument,
 } from ".";
+import CustomError from "src/common/error/custom-error";
+import { RESULT_CODE } from "src/constant";
 
 export class SubscriptionRepositoryImplement {
   private readonly logger = new Logger(this.constructor.name);
@@ -17,6 +19,13 @@ export class SubscriptionRepositoryImplement {
     @InjectModel(SubscriptionNewsEntity.name)
     private subscriptionNews: Model<SubscriptionNewsDocument>
   ) {}
+
+  async findSubscription(param: SubscriptionEntity) {
+    return this.subscription.findOne({
+      subscriber_id: param.subscriber_id,
+      school_id: param.school_id,
+    });
+  }
 
   async createSubscription(
     subscription: SubscriptionEntity
@@ -37,5 +46,20 @@ export class SubscriptionRepositoryImplement {
 
   async updateSubscriptionNews(newsId: ObjectId) {
     return this.subscriptionNews.updateMany({ is_read: false });
+  }
+
+  async deleteSubscription(
+    param: SubscriptionEntity
+  ): Promise<SubscriptionEntity> {
+    const result = await this.subscription.updateOne(
+      { subscriber_id: param.subscriber_id, school_id: param.school_id },
+      { delete_at: new Date() }
+    );
+    if (!result.modifiedCount)
+      throw new CustomError(RESULT_CODE.FAIL_TO_DELETE_SUBSCRIPTION);
+
+    const subscription = await this.findSubscription(param);
+    this.logger.debug(`deleted subscription ID = ${subscription?._id}`);
+    return subscription?.toObject() as SubscriptionEntity;
   }
 }

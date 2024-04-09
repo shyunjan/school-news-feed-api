@@ -37,8 +37,22 @@ export class NewsRepositoryImplement {
       {
         $lookup: {
           from: "subscription",
-          localField: "school_id",
-          foreignField: "school_id",
+          let: { news_school_id: "$school_id" },
+          pipeline: [
+            {
+              $match: {
+                $and: [
+                  {
+                    $expr: {
+                      $and: [{ $eq: ["$school_id", "$$news_school_id"] }],
+                    },
+                  },
+                  { delete_at: { $exists: false } },
+                ],
+              },
+            },
+            { $project: { _id: 1 } },
+          ],
           as: "subscription",
         },
       },

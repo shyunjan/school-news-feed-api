@@ -15,9 +15,16 @@ import {
 } from "./infra";
 import { AuthInjectionToken } from "src/auth/Injection-token";
 import { AuthRepositoryImplement } from "src/auth/infra/auth.repository.implement";
-import { CreateSubscriptionCommandHandler } from "./application";
+import {
+  CreateSubscriptionCommandHandler,
+  DeleteSubscriptionCommandHandler,
+} from "./application";
 
-const application = [JwtService, CreateSubscriptionCommandHandler];
+const application = [
+  JwtService,
+  CreateSubscriptionCommandHandler,
+  DeleteSubscriptionCommandHandler,
+];
 
 const infrastructure: Provider[] = [
   {

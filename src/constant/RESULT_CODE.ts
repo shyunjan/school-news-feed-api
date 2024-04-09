@@ -39,6 +39,11 @@ const RESULT_CODE = (<T extends { [key: string]: number }>(arg: T): T => arg)({
   NOT_FOUND_NEWS: 104110,
   UNAUTHORIZED_NEWS: 10411,
 
+  /* SUBSCRIPTION 관련 에러 - 106XX */
+  FAIL_TO_DELETE_SUBSCRIPTION: 10603,
+  ALEADY_DELETED_SUBSCRIPTION: 10604,
+  NOT_FOUND_SUBSCRIPTION: 106110,
+
   VALIDATION_ERROR: 99000, // Request Validation 오류
   UNKNOWN_ERROR: 99999, // 알 수 없는 오류
 });
