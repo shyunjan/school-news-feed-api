@@ -20,8 +20,9 @@ export class CreateNewsCommandHandler
       body,
       session: { id: admin_id, is_admin, school_id },
     } = command;
-    if (!is_admin || !school_id)
-      throw new CustomError(RESULT_CODE.AUTH_NEED_ADMIN);
+    if (!is_admin) throw new CustomError(RESULT_CODE.AUTH_NEED_ADMIN);
+    if (!school_id)
+      throw new CustomError(RESULT_CODE.NOT_FOUND_SCHOOL_IN_SESSION);
 
     const news = await this.newsRepository.createNews({
       ...body,
@@ -32,5 +33,6 @@ export class CreateNewsCommandHandler
 
     /* 뉴스가 생성되면 해당 뉴스 학교의 구독자들에게 생성된 뉴스번호를 전달하여 subscription-news 생성한다 */
     news.createSubscriptionNews();
+    return news;
   }
 }

@@ -13,6 +13,7 @@ import { config } from "src/config/config";
 import { AuthModule } from "./auth/auth.module";
 import { NewsModule } from "./news/news.module";
 import { SubscriptionModule } from "./subscription/subscription.module";
+import { SchoolModule } from "./school/school.module";
 
 @Global()
 @Module({
@@ -20,6 +21,7 @@ import { SubscriptionModule } from "./subscription/subscription.module";
     MongooseModule.forRoot(config.MONGO_DB_URL as string),
     PasswordModule,
     AuthModule,
+    SchoolModule,
     NewsModule,
     SubscriptionModule,
   ],

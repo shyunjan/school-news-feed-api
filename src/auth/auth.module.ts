@@ -5,7 +5,6 @@ import { PasswordModule } from "src/libs/password.module";
 import { MongooseModule } from "@nestjs/mongoose";
 import { Schema } from "mongoose";
 import { UserEntity, UserSchema } from "./infra/user.entity";
-import { SchoolEntity, SchoolSchema } from "src/school/infra/school.entity";
 import { config } from "src/config/config";
 import { AuthController } from "./auth.controller";
 import { AuthInjectionToken } from "./Injection-token";
@@ -47,16 +46,12 @@ const infrastructure: Provider[] = [
         name: UserEntity.name,
         useFactory: (): Schema => UserSchema,
       },
-      {
-        name: SchoolEntity.name,
-        useFactory: (): Schema => SchoolSchema,
-      },
     ]),
     PasswordModule,
     SchoolModule,
   ],
   controllers: [AuthController],
   providers: [...application, ...infrastructure],
-  exports: [JwtStrategy, JwtService, MongooseModule],
+  exports: [JwtStrategy, JwtService, MongooseModule, ...infrastructure],
 })
 export class AuthModule {}

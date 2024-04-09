@@ -21,8 +21,10 @@ export class UpdateNewsCommandHandler
       body,
       session: { is_admin, school_id },
     } = command;
-    if (!is_admin || !school_id)
-      throw new CustomError(RESULT_CODE.AUTH_NEED_ADMIN);
+    if (!is_admin) throw new CustomError(RESULT_CODE.AUTH_NEED_ADMIN);
+    if (!school_id)
+      throw new CustomError(RESULT_CODE.NOT_FOUND_SCHOOL_IN_SESSION);
+
     const existNews = await this.newsRepository.findNewsOne(newsId);
     if (!existNews) throw new CustomError(RESULT_CODE.NOT_FOUND_NEWS);
     if (String(existNews.getSchoolId()) !== String(school_id))
