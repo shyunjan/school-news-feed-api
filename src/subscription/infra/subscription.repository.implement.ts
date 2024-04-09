@@ -1,6 +1,6 @@
 import { Logger } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
-import { Model, ObjectId } from "mongoose";
+import { Model, ObjectId, PipelineStage } from "mongoose";
 import {} from "./subscription.entity";
 import {
   SubscriptionEntity,
@@ -10,6 +10,7 @@ import {
 } from ".";
 import CustomError from "src/common/error/custom-error";
 import { RESULT_CODE } from "src/constant";
+import { NewsWithId } from "src/types";
 
 export class SubscriptionRepositoryImplement {
   private readonly logger = new Logger(this.constructor.name);
@@ -61,5 +62,76 @@ export class SubscriptionRepositoryImplement {
     const subscription = await this.findSubscription(param);
     this.logger.debug(`deleted subscription ID = ${subscription?._id}`);
     return subscription?.toObject() as SubscriptionEntity;
+  }
+
+  async findSubscriptionNews(
+    subscriberId: string,
+    schoolId: ObjectId
+  ): Promise<NewsWithId[]> {
+    const filterStages: PipelineStage[] = [
+      {
+        $match: {
+          $and: [
+            {
+              subscriber_id: subscriberId,
+            },
+            {
+              school_id: schoolId,
+            },
+          ],
+        },
+      },
+    ];
+    const lookupSubscriptionNewsStages: PipelineStage[] = [
+      {
+        $lookup: {
+          from: "subscription-news",
+          localField: "_id",
+          foreignField: "subscription_id",
+          as: "subscription-news",
+        },
+      },
+      {
+        $unwind: "$subscription-news",
+      },
+      {
+        $project: {
+          _id: 0,
+          news_id: "$subscription-news.news_id",
+        },
+      },
+    ];
+    const lookupNewsStages: PipelineStage[] = [
+      {
+        $lookup: {
+          from: "news",
+          localField: "news_id",
+          foreignField: "_id",
+          as: "news",
+        },
+      },
+      {
+        $match: { "news.delete_at": { $exists: false } },
+      },
+      {
+        $unwind: "$news",
+      },
+    ];
+
+    const searchStages: PipelineStage[] = [
+      ...filterStages,
+      ...lookupSubscriptionNewsStages,
+      ...lookupNewsStages,
+      {
+        $project: {
+          _id: "$news_id",
+          title: "$news.title",
+          admin_id: "$news.admin_id",
+          create_at: "$news.create_at",
+          update_at: "$news.update_at",
+        },
+      },
+    ];
+    return (await this.subscription.aggregate(searchStages)) as NewsWithId[];
   }
 }

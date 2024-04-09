@@ -11,8 +11,5 @@ export class NewsQueryHandler implements IQueryHandler<NewsQuery> {
     private readonly newsRepository: NewsRepositoryImplement
   ) {}
 
-  async execute(query: NewsQuery) {
-    const { newsId } = query;
-    return this.newsRepository.makeSubscriptionNewsEntities(newsId);
-  }
+  async execute(query: NewsQuery) {}
 }

@@ -1,10 +1,6 @@
 import { Logger, RawBodyRequest } from "@nestjs/common";
 import { FastifyInstance, FastifyRequest } from "fastify";
-
-function getModuleFileName(fullFileName: string): string {
-  const filenameMatch = /([^/\\]+?).(js|ts)$/.exec(fullFileName);
-  return (filenameMatch && filenameMatch[1]) ?? "";
-}
+import { getModuleFileName } from "src/utils/commonUtil";
 
 const logger = new Logger(getModuleFileName(__filename));
 

@@ -28,6 +28,7 @@ import {
   UpdateNewsCommand,
 } from "./application";
 import { ObjectId } from "mongoose";
+import { ParseObjectIdPipe } from "src/utils/pipe/parse-object-id.pipe";
 
 @ApiTags("NEWS")
 @Controller("news")
@@ -64,7 +65,7 @@ export class NewsController {
   @UseGuards(JwtAuthGuard)
   @Put("/modify")
   async updateNews(
-    @Query("news_id") newsId: ObjectId,
+    @Query("news_id", new ParseObjectIdPipe()) newsId: ObjectId,
     @User() session: SessionDto,
     @Body() body: CreateNewsDto
   ) {
@@ -88,7 +89,7 @@ export class NewsController {
   @UseGuards(JwtAuthGuard)
   @Delete("/delete")
   async deleteNews(
-    @Query("news_id") newsId: ObjectId,
+    @Query("news_id", new ParseObjectIdPipe()) newsId: ObjectId,
     @User() session: SessionDto
   ) {
     return this.commandBus.execute(new DeleteNewsCommand(newsId, session));

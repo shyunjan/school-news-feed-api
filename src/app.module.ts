@@ -1,9 +1,4 @@
-import {
-  Global,
-  MiddlewareConsumer,
-  Module,
-  OnApplicationBootstrap,
-} from "@nestjs/common";
+import { Global, Module, OnApplicationBootstrap } from "@nestjs/common";
 import { Server } from "node:http";
 import { AbstractHttpAdapter, HttpAdapterHost } from "@nestjs/core";
 import { MongooseModule } from "@nestjs/mongoose";

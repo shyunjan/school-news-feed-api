@@ -28,12 +28,12 @@ export class NewsRepositoryImplement {
   async makeSubscriptionNewsEntities(
     newsId: ObjectId
   ): Promise<SubscriptionNewsEntity[]> {
-    const filter_stages: PipelineStage[] = [
+    const filterStages: PipelineStage[] = [
       {
         $match: { _id: newsId },
       },
     ];
-    const lookup_stages: PipelineStage[] = [
+    const lookupStages: PipelineStage[] = [
       {
         $lookup: {
           from: "subscription",
@@ -60,9 +60,9 @@ export class NewsRepositoryImplement {
         $unwind: { path: "$subscription" },
       },
     ];
-    const search_stages: PipelineStage[] = [
-      ...filter_stages,
-      ...lookup_stages,
+    const searchStages: PipelineStage[] = [
+      ...filterStages,
+      ...lookupStages,
       {
         $project: {
           _id: 0,
@@ -72,7 +72,7 @@ export class NewsRepositoryImplement {
       },
     ];
     return (await this.news.aggregate(
-      search_stages
+      searchStages
     )) as SubscriptionNewsEntity[];
   }
 

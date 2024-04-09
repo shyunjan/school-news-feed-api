@@ -1,5 +1,7 @@
 import { IQuery } from "@nestjs/cqrs";
+import { ObjectId } from "mongoose";
+import { SessionDto } from "src/auth/dto";
 
 export class SubscriptionNewsQuery implements IQuery {
-  // constructor(readonly body: LoginUserDto, readonly reply: FastifyReply) {}
+  constructor(readonly schoolId: ObjectId, readonly session: SessionDto) {}
 }

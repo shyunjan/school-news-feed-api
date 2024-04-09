@@ -18,12 +18,14 @@ import { AuthRepositoryImplement } from "src/auth/infra/auth.repository.implemen
 import {
   CreateSubscriptionCommandHandler,
   DeleteSubscriptionCommandHandler,
+  SubscriptionNewsQueryHandler,
 } from "./application";
 
 const application = [
   JwtService,
   CreateSubscriptionCommandHandler,
   DeleteSubscriptionCommandHandler,
+  SubscriptionNewsQueryHandler,
 ];
 
 const infrastructure: Provider[] = [
