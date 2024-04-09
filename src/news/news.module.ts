@@ -14,11 +14,12 @@ import {
   CreateNewsCommandHandler,
   NewsQueryHandler,
   UpdateNewsCommandHandler,
+  CreateSubscriptionNewsEventHandler,
   UpdateSubscriptionNewsEventHandler,
+  DeleteNewsCommandHandler,
 } from "./application";
 import { SubscriptionModule } from "src/subscription/subscription.module";
 import { NewsFactory } from "./domain";
-import { CreateSubscriptionNewsEventHandler } from "./application";
 import { SubscriptionInjectionToken } from "src/subscription/Injection-token";
 import { SubscriptionRepositoryImplement } from "src/subscription/infra";
 
@@ -26,6 +27,7 @@ const application = [
   JwtService,
   CreateNewsCommandHandler,
   UpdateNewsCommandHandler,
+  DeleteNewsCommandHandler,
   NewsQueryHandler,
   CreateSubscriptionNewsEventHandler,
   UpdateSubscriptionNewsEventHandler,

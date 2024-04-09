@@ -62,7 +62,10 @@ export class NewsRepositoryImplement {
     )) as SubscriptionNewsEntity[];
   }
 
-  async updateNews(newsId: ObjectId, news: CreateNewsDto) {
+  async updateNews(
+    newsId: ObjectId,
+    news: CreateNewsDto
+  ): Promise<News | null> {
     const updateResult = await this.news.updateOne(
       { _id: newsId },
       { ...news, update_at: new Date() }
@@ -70,6 +73,18 @@ export class NewsRepositoryImplement {
     if (!updateResult.modifiedCount)
       throw new CustomError(RESULT_CODE.FAIL_TO_UPDATE_NEWS);
     this.logger.debug(`saved news ID = ${newsId}`);
+    return this.findNewsOne(newsId);
+  }
+
+  async deleteNews(newsId: ObjectId): Promise<News | null> {
+    type DeleteResult = { deletedCount: number };
+    const updateResult = await this.news.updateOne(
+      { _id: newsId },
+      { delete_at: new Date() }
+    );
+    if (!updateResult.modifiedCount)
+      throw new CustomError(RESULT_CODE.FAIL_TO_DELETE_NEWS);
+    this.logger.debug(`deleted news ID = ${newsId}`);
     return this.findNewsOne(newsId);
   }
 

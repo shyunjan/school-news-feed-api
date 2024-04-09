@@ -4,21 +4,20 @@ import { NewsInjectionToken } from "src/news/Injection-token";
 import { NewsRepositoryImplement } from "src/news/infra/news.repository.implement";
 import CustomError from "src/common/error/custom-error";
 import { RESULT_CODE } from "src/constant";
-import { UpdateNewsCommand } from "../";
+import { DeleteNewsCommand } from "..";
 
-@CommandHandler(UpdateNewsCommand)
-export class UpdateNewsCommandHandler
-  implements ICommandHandler<UpdateNewsCommand>
+@CommandHandler(DeleteNewsCommand)
+export class DeleteNewsCommandHandler
+  implements ICommandHandler<DeleteNewsCommand>
 {
   constructor(
     @Inject(NewsInjectionToken.NEWS_REPOSITORY)
     private readonly newsRepository: NewsRepositoryImplement
   ) {}
 
-  async execute(command: UpdateNewsCommand) {
+  async execute(command: DeleteNewsCommand) {
     const {
       newsId,
-      body,
       session: { is_admin, school_id },
     } = command;
     if (!is_admin || !school_id)
@@ -27,10 +26,9 @@ export class UpdateNewsCommandHandler
     if (!existNews) throw new CustomError(RESULT_CODE.NOT_FOUND_NEWS);
     if (String(existNews.getSchoolId()) !== String(school_id))
       throw new CustomError(RESULT_CODE.UNAUTHORIZED_NEWS);
+    if (existNews.getDeleteAt())
+      throw new CustomError(RESULT_CODE.ALEADY_DELETED_NEWS);
 
-    const news = await this.newsRepository.updateNews(newsId, body);
-    /* 뉴스가 수정되면 해당 구독정보-뉴스(subscription-news)의 읽음여부(is_read)를 전부 false로 업데이트한다 */
-    news!.updateSubscriptionNews();
-    return news;
+    return this.newsRepository.deleteNews(newsId);
   }
 }

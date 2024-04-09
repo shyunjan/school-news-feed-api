@@ -34,6 +34,9 @@ const RESULT_CODE = (<T extends { [key: string]: number }>(arg: T): T => arg)({
   /* NEWS 관련 에러 - 104XX */
   FAIL_TO_CREATE_NEWS: 10401,
   FAIL_TO_UPDATE_NEWS: 10402,
+  FAIL_TO_DELETE_NEWS: 10403,
+  ALEADY_DELETED_NEWS: 10404,
+  NOT_FOUND_NEWS: 104110,
   UNAUTHORIZED_NEWS: 10411,
 
   VALIDATION_ERROR: 99000, // Request Validation 오류

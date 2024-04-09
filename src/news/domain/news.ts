@@ -25,7 +25,9 @@ export type NewsProperties = NewsEssentialProperties & NewsOptionalProperties;
 export interface News {
   createSubscriptionNews: () => void;
   updateSubscriptionNews: () => void;
+  // deleteSubscriptionNews: () => void;
   getSchoolId: () => ObjectId;
+  getDeleteAt: () => Date | undefined | null;
 }
 
 export class NewsImplement extends AggregateRoot implements News {
@@ -34,6 +36,9 @@ export class NewsImplement extends AggregateRoot implements News {
   private readonly contents: string;
   private readonly school_id: ObjectId;
   private readonly admin_id: string;
+  private readonly create_at?: Date;
+  private readonly update_at?: Date;
+  private readonly delete_at?: Date | undefined | null;
 
   constructor(properties: NewsProperties) {
     super();
@@ -51,7 +56,15 @@ export class NewsImplement extends AggregateRoot implements News {
     this.apply(new UpdateSubscriptionNewsEvent(this._id));
   }
 
+  // deleteSubscriptionNews() {
+  //   this.apply(new DeleteSubscriptionNewsEvent(this._id));
+  // }
+
   getSchoolId() {
     return this.school_id;
+  }
+
+  getDeleteAt() {
+    return this.delete_at;
   }
 }

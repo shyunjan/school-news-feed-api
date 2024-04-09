@@ -1,7 +1,9 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
+  ParseUUIDPipe,
   Post,
   Put,
   Query,
@@ -20,7 +22,11 @@ import { JwtAuthGuard } from "src/auth/guard";
 import { CreateNewsDto } from "./dto";
 import { User } from "src/common/decorators/user.decorator";
 import { SessionDto } from "src/auth/dto";
-import { CreateNewsCommand, NewsQuery, UpdateNewsCommand } from "./application";
+import {
+  CreateNewsCommand,
+  DeleteNewsCommand,
+  UpdateNewsCommand,
+} from "./application";
 import { ObjectId } from "mongoose";
 
 @ApiTags("NEWS")
@@ -67,15 +73,36 @@ export class NewsController {
     );
   }
 
+  @ApiBearerAuth()
   @ApiOkResponse({
     type: ResponseDto,
     description: "성공",
   })
-  @ApiOperation({
-    summary: "(테스트용)[관리자 로그인 필요] 뉴스 구독정보 리스트 조회",
+  @ApiOperation({ summary: "[관리자 로그인 필요] 뉴스 삭제" })
+  @ApiQuery({
+    name: "news_id",
+    required: true,
+    type: "string",
+    description: "뉴스번호",
   })
-  @Get("/")
-  async findNews(@Query("news_id") news_id: ObjectId) {
-    return this.queryBus.execute(new NewsQuery(news_id));
+  @UseGuards(JwtAuthGuard)
+  @Delete("/delete")
+  async deleteNews(
+    @Query("news_id") newsId: ObjectId,
+    @User() session: SessionDto
+  ) {
+    return this.commandBus.execute(new DeleteNewsCommand(newsId, session));
   }
+
+  // @ApiOkResponse({
+  //   type: ResponseDto,
+  //   description: "성공",
+  // })
+  // @ApiOperation({
+  //   summary: "(테스트용)[관리자 로그인 필요] 뉴스 구독정보 리스트 조회",
+  // })
+  // @Get("/")
+  // async findNews(@Query("news_id") news_id: ObjectId) {
+  //   return this.queryBus.execute(new NewsQuery(news_id));
+  // }
 }
