@@ -1,8 +1,8 @@
-import { Logger } from "@nestjs/common";
-import { InjectModel } from "@nestjs/mongoose";
-import { Model } from "mongoose";
-import { SchoolEntity, SchoolDocument } from "./school.entity";
-import { SchoolEntityWithId } from "src/types";
+import {Logger} from '@nestjs/common';
+import {InjectModel} from '@nestjs/mongoose';
+import {Model} from 'mongoose';
+import {SchoolEntity, SchoolDocument} from './school.entity';
+import {SchoolEntityWithId} from 'src/types';
 
 export class SchoolRepositoryImplement {
   private readonly logger = new Logger(this.constructor.name);
@@ -23,8 +23,8 @@ export class SchoolRepositoryImplement {
 
   async findAllSchool() {
     return this.school
-      .find({}, { _id: 1, region: 1, name: 1 })
-      .sort({ region: "asc", name: "asc" })
+      .find({}, {_id: 1, region: 1, name: 1})
+      .sort({region: 'asc', name: 'asc'})
       .lean();
   }
 }
