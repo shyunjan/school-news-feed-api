@@ -10,18 +10,27 @@ import { NewsRepositoryImplement } from "./infra/news.repository.implement";
 import { NewsEntity, NewsSchema } from "./infra/news.entity";
 import { AuthInjectionToken } from "src/auth/Injection-token";
 import { AuthRepositoryImplement } from "src/auth/infra/auth.repository.implement";
-import { CreateNewsCommandHandler, NewsQueryHandler } from "./application";
+import {
+  CreateNewsCommandHandler,
+  NewsQueryHandler,
+  UpdateNewsCommandHandler,
+  CreateSubscriptionNewsEventHandler,
+  UpdateSubscriptionNewsEventHandler,
+  DeleteNewsCommandHandler,
+} from "./application";
 import { SubscriptionModule } from "src/subscription/subscription.module";
 import { NewsFactory } from "./domain";
-import { CreateSubscriptionNewsEventHandler } from "./application";
 import { SubscriptionInjectionToken } from "src/subscription/Injection-token";
 import { SubscriptionRepositoryImplement } from "src/subscription/infra";
 
 const application = [
   JwtService,
   CreateNewsCommandHandler,
+  UpdateNewsCommandHandler,
+  DeleteNewsCommandHandler,
   NewsQueryHandler,
   CreateSubscriptionNewsEventHandler,
+  UpdateSubscriptionNewsEventHandler,
 ];
 
 const infrastructure: Provider[] = [

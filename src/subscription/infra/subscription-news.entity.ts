@@ -10,7 +10,7 @@ export class SubscriptionNewsEntity extends BaseEntity {
   @Prop({ type: SchemaTypes.ObjectId, index: true, required: true })
   news_id: ObjectId; // 뉴스 번호
 
-  @Prop({ type: SchemaTypes.Boolean, index: false, required: false })
+  @Prop({ type: SchemaTypes.Boolean, required: false, default: false })
   is_read: boolean = false; // 열람 여부
 }
 

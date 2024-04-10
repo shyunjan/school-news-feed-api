@@ -1,6 +1,7 @@
 import {
   Controller,
-  ParseEnumPipe,
+  Delete,
+  Get,
   Post,
   Query,
   UseGuards,
@@ -18,7 +19,12 @@ import { ResponseDto } from "src/common/responseDto/response.dto";
 import { JwtAuthGuard } from "src/auth/guard";
 import { User } from "src/common/decorators/user.decorator";
 import { SessionDto } from "src/auth/dto";
-import { CreateSubscriptionCommand } from "./application";
+import {
+  CreateSubscriptionCommand,
+  DeleteSubscriptionCommand,
+  SubscriptionNewsQuery,
+} from "./application";
+import { ParseObjectIdPipe } from "src/utils/pipe/parse-object-id.pipe";
 
 @ApiTags("SUBSCRIPTION")
 @Controller("subscription")
@@ -43,13 +49,55 @@ export class SubscriptionNewsController {
   @UseGuards(JwtAuthGuard)
   @Post("/register")
   async createSubscription(
-    @Query("school_id") school_id: ObjectId,
+    @Query("school_id", new ParseObjectIdPipe()) schoolId: ObjectId,
     @User() session: SessionDto
   ) {
-    console.debug(`school_id = ${JSON.stringify(school_id)}`);
-    console.debug(`session = ${JSON.stringify(session)}`);
     return this.commandBus.execute(
-      new CreateSubscriptionCommand(school_id, session)
+      new CreateSubscriptionCommand(schoolId, session)
     );
+  }
+
+  @ApiBearerAuth()
+  @ApiOkResponse({
+    type: ResponseDto,
+    description: "성공",
+  })
+  @ApiOperation({ summary: "[로그인 필요] 구독 취소" })
+  @ApiQuery({
+    name: "school_id",
+    required: true,
+    type: "string",
+    description: "학교 번호",
+  })
+  @UseGuards(JwtAuthGuard)
+  @Delete("/cancel")
+  async deleteSubscription(
+    @Query("school_id", new ParseObjectIdPipe()) schoolId: ObjectId,
+    @User() session: SessionDto
+  ) {
+    return this.commandBus.execute(
+      new DeleteSubscriptionCommand(schoolId, session)
+    );
+  }
+
+  @ApiBearerAuth()
+  @ApiOkResponse({
+    type: ResponseDto,
+    description: "성공",
+  })
+  @ApiOperation({ summary: "[로그인 필요] 학교별 구독 뉴스 리스트 조회" })
+  @ApiQuery({
+    name: "school_id",
+    required: true,
+    type: "string",
+    description: "학교 번호",
+  })
+  @UseGuards(JwtAuthGuard)
+  @Get("/news/query")
+  async findSubscriptionNews(
+    @Query("school_id", new ParseObjectIdPipe()) schoolId: ObjectId,
+    @User() session: SessionDto
+  ) {
+    return this.queryBus.execute(new SubscriptionNewsQuery(schoolId, session));
   }
 }

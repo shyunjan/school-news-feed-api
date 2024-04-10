@@ -1,6 +1,6 @@
 import { ExtractJwt, Strategy } from "passport-jwt";
 import { PassportStrategy } from "@nestjs/passport";
-import { Inject, Injectable } from "@nestjs/common";
+import { Inject, Injectable, Logger } from "@nestjs/common";
 import CustomError from "src/common/error/custom-error";
 import { RESULT_CODE } from "src/constant";
 import { config } from "src/config/config";
@@ -15,6 +15,7 @@ export type PayloadType = {
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
+  private readonly logger = new Logger(this.constructor.name);
   constructor(
     @Inject(AuthInjectionToken.AUTH_REPOSITORY)
     private readonly authRepository: AuthRepositoryImplement
@@ -36,6 +37,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     delete payload["iat"]; // 토큰 관련 메타정보를 삭제
     delete payload["exp"];
     const session: SessionType = { ...payload, school_id: existUser.school_id };
+    this.logger.debug(`session = ${JSON.stringify(session)}`);
     return session;
   }
 }

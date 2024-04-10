@@ -1,9 +1,4 @@
-import {
-  Global,
-  MiddlewareConsumer,
-  Module,
-  OnApplicationBootstrap,
-} from "@nestjs/common";
+import { Global, Module, OnApplicationBootstrap } from "@nestjs/common";
 import { Server } from "node:http";
 import { AbstractHttpAdapter, HttpAdapterHost } from "@nestjs/core";
 import { MongooseModule } from "@nestjs/mongoose";
@@ -13,6 +8,7 @@ import { config } from "src/config/config";
 import { AuthModule } from "./auth/auth.module";
 import { NewsModule } from "./news/news.module";
 import { SubscriptionModule } from "./subscription/subscription.module";
+import { SchoolModule } from "./school/school.module";
 
 @Global()
 @Module({
@@ -20,6 +16,7 @@ import { SubscriptionModule } from "./subscription/subscription.module";
     MongooseModule.forRoot(config.MONGO_DB_URL as string),
     PasswordModule,
     AuthModule,
+    SchoolModule,
     NewsModule,
     SubscriptionModule,
   ],

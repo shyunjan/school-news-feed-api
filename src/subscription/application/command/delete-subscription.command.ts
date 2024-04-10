@@ -1,7 +1,7 @@
-import { IQuery } from "@nestjs/cqrs";
+import { ICommand } from "@nestjs/cqrs";
 import { ObjectId } from "mongoose";
 import { SessionDto } from "src/auth/dto";
 
-export class SubscriptionNewsQuery implements IQuery {
+export class DeleteSubscriptionCommand implements ICommand {
   constructor(readonly schoolId: ObjectId, readonly session: SessionDto) {}
 }

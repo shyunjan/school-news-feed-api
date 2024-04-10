@@ -31,15 +31,20 @@ export class CreateAdminCommandHandler
     const { password, school } = body;
     // this.logger.debug(`id = ${password}, password = ${password}; school = ${JSON.stringify(school)}`);
     const passwdHash = await this.passwordGenerator.generateHash(body.password);
-    this.logger.debug(`password = ${password}; passwdHash = ${passwdHash}`);
     body.password = passwdHash;
 
-    const schoolId: ObjectId = await this.schoolRepository.createSchool(school);
+    const school_id = school
+      ? (await this.schoolRepository.createSchool(school))?._id
+      : undefined;
 
+    /**
+     * TODO: 위의 학교 생성 프로세스(schoolRepository.createSchool)와 아래 유저 정보 생성
+     *       프로세스(createAdmin)를 트랜잭션 처리할 것.
+     */
     return this.authRepository.createAdmin({
       ...body,
       is_admin: true,
-      school_id: schoolId,
+      school_id,
     });
   }
 }

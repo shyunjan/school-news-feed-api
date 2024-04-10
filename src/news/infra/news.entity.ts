@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { Document, ObjectId, SchemaTypes } from "mongoose";
-import { CreateNewsDto, CreateNewsType } from "../dto";
+import { CreateNewsType } from "../dto";
 import { BaseEntity } from "src/common/entity/base.entity";
 
 @Schema({ collection: "news" })
