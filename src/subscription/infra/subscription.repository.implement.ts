@@ -71,22 +71,22 @@ export class SubscriptionRepositoryImplement {
 
   async findSubscriptionNewsList(
     subscriberId: string,
-    schoolId: ObjectId
+    schoolId?: ObjectId
   ): Promise<SubscriptionNewsList[]> {
+    const filter: FilterQuery<SubscriptionNewsEntityWithId>[] = [
+      {
+        subscriber_id: subscriberId,
+      },
+    ];
+    if (schoolId) filter.push({school_id: schoolId});
     const filterStages: PipelineStage[] = [
       {
         $match: {
-          $and: [
-            {
-              subscriber_id: subscriberId,
-            },
-            {
-              school_id: schoolId,
-            },
-          ],
+          $and: [...filter],
         },
       },
     ];
+
     const lookupSubscriptionNewsStages: PipelineStage[] = [
       {
         $lookup: {

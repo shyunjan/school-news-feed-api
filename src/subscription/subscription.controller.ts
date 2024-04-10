@@ -69,15 +69,15 @@ export class SubscriptionController {
   @ApiOperation({summary: '[로그인 필요] 학교별 구독 뉴스 리스트 조회'})
   @ApiQuery({
     name: 'school_id',
-    required: true,
+    required: false,
     type: 'string',
     description: '학교 번호',
   })
   @UseGuards(JwtAuthGuard)
   @Get('/news/query-list')
   async findSubscriptionNewsList(
-    @Query('school_id', new ParseObjectIdPipe()) schoolId: ObjectId,
-    @User() session: SessionDto
+    @User() session: SessionDto,
+    @Query('school_id', new ParseObjectIdPipe()) schoolId?: ObjectId
   ) {
     return this.queryBus.execute(new SubscriptionNewsListQuery(session, schoolId));
   }
