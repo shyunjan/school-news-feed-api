@@ -10,7 +10,7 @@ import {
 } from '.';
 import CustomError from 'src/common/error/custom-error';
 import {RESULT_CODE} from 'src/constant';
-import {NewsEntityWithId} from 'src/types';
+import {NewsEntityWithId, SubscriptionNewsList} from 'src/types';
 
 export class SubscriptionRepositoryImplement {
   private readonly logger = new Logger(this.constructor.name);
@@ -62,7 +62,7 @@ export class SubscriptionRepositoryImplement {
   async findSubscriptionNews(
     subscriberId: string,
     schoolId: ObjectId
-  ): Promise<NewsEntityWithId[]> {
+  ): Promise<SubscriptionNewsList[]> {
     const filterStages: PipelineStage[] = [
       {
         $match: {
@@ -93,6 +93,7 @@ export class SubscriptionRepositoryImplement {
         $project: {
           _id: 0,
           news_id: '$subscription-news.news_id',
+          subscription_news_id: '$subscription-news._id',
         },
       },
     ];
@@ -118,7 +119,8 @@ export class SubscriptionRepositoryImplement {
       ...lookupNewsStages,
       {
         $project: {
-          _id: '$news_id',
+          subscription_news_id: 1,
+          news_id: 1,
           title: '$news.title',
           admin_id: '$news.admin_id',
           create_at: '$news.create_at',
@@ -126,9 +128,9 @@ export class SubscriptionRepositoryImplement {
         },
       },
       {
-        $sort: {_id: -1},
+        $sort: {update_at: -1},
       },
     ];
-    return (await this.subscription.aggregate(searchStages)) as NewsEntityWithId[];
+    return (await this.subscription.aggregate(searchStages)) as SubscriptionNewsList[];
   }
 }
