@@ -10,7 +10,7 @@ import {
 } from '.';
 import CustomError from 'src/common/error/custom-error';
 import {RESULT_CODE} from 'src/constant';
-import {NewsEntityWithId, SubscriptionNewsList} from 'src/types';
+import {SubscriptionNewsList} from 'src/types';
 
 export class SubscriptionRepositoryImplement {
   private readonly logger = new Logger(this.constructor.name);
