@@ -18,6 +18,7 @@ import {AuthRepositoryImplement} from 'src/auth/infra/auth.repository.implement'
 import {
   CreateSubscriptionCommandHandler,
   DeleteSubscriptionCommandHandler,
+  SubscriptionNewsListQueryHandler,
   SubscriptionNewsQueryHandler,
 } from './application';
 
@@ -25,6 +26,7 @@ const application = [
   JwtService,
   CreateSubscriptionCommandHandler,
   DeleteSubscriptionCommandHandler,
+  SubscriptionNewsListQueryHandler,
   SubscriptionNewsQueryHandler,
 ];
 

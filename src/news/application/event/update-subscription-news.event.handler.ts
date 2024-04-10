@@ -1,8 +1,8 @@
-import { Inject } from "@nestjs/common";
-import { EventsHandler, IEventHandler } from "@nestjs/cqrs";
-import { UpdateSubscriptionNewsEvent } from "src/news/domain";
-import { SubscriptionInjectionToken } from "src/subscription/Injection-token";
-import { SubscriptionRepositoryImplement } from "src/subscription/infra";
+import {Inject} from '@nestjs/common';
+import {EventsHandler, IEventHandler} from '@nestjs/cqrs';
+import {UpdateSubscriptionNewsEvent} from 'src/news/domain';
+import {SubscriptionInjectionToken} from 'src/subscription/Injection-token';
+import {SubscriptionRepositoryImplement} from 'src/subscription/infra';
 
 @EventsHandler(UpdateSubscriptionNewsEvent)
 export class UpdateSubscriptionNewsEventHandler
@@ -12,7 +12,7 @@ export class UpdateSubscriptionNewsEventHandler
   private readonly subscriptionRepository: SubscriptionRepositoryImplement;
 
   async handle(event: UpdateSubscriptionNewsEvent) {
-    const { newsId } = event;
-    await this.subscriptionRepository.updateSubscriptionNews(newsId);
+    const {newsId} = event;
+    await this.subscriptionRepository.updateSubscriptionNewsRead({news_id: newsId}, false);
   }
 }

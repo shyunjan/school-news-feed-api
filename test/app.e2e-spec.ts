@@ -58,7 +58,7 @@ describe('app: NestFastifyApplication', () => {
 
   it(`3. Query subscription-news (GET)`, async () => {
     return request(app.getHttpServer())
-      .get('/subscription/news/query?school_id=6613d6743f643554503bd562')
+      .get('/subscription/news/query-list?school_id=6613d6743f643554503bd562')
       .set('Authorization', `Bearer ${token}`)
       .expect(200)
       .expect(res => {

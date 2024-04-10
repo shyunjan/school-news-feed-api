@@ -1,6 +1,6 @@
 import {Logger} from '@nestjs/common';
 import {InjectModel} from '@nestjs/mongoose';
-import {Model, ObjectId, PipelineStage} from 'mongoose';
+import {FilterQuery, Model, ObjectId, PipelineStage} from 'mongoose';
 import {} from './subscription.entity';
 import {
   SubscriptionEntity,
@@ -10,7 +10,7 @@ import {
 } from '.';
 import CustomError from 'src/common/error/custom-error';
 import {RESULT_CODE} from 'src/constant';
-import {SubscriptionNewsList} from 'src/types';
+import {SubscriptionNewsList, AggregatedNewsType, SubscriptionNewsEntityWithId} from 'src/types';
 
 export class SubscriptionRepositoryImplement {
   private readonly logger = new Logger(this.constructor.name);
@@ -22,10 +22,16 @@ export class SubscriptionRepositoryImplement {
   ) {}
 
   async findSubscription(param: SubscriptionEntity) {
-    return this.subscription.findOne({
-      subscriber_id: param.subscriber_id,
-      school_id: param.school_id,
-    });
+    return this.subscription
+      .findOne({
+        subscriber_id: param.subscriber_id,
+        school_id: param.school_id,
+      })
+      .lean();
+  }
+
+  async findSubscriptionById(subscriptionId: ObjectId) {
+    return this.subscription.findById(subscriptionId).lean();
   }
 
   async createSubscription(subscription: SubscriptionEntity): Promise<ObjectId> {
@@ -43,8 +49,12 @@ export class SubscriptionRepositoryImplement {
     ) as SubscriptionNewsDocument[];
   }
 
-  async updateSubscriptionNews(newsId: ObjectId) {
-    return this.subscriptionNews.updateMany({is_read: false});
+  async updateSubscriptionNewsRead(param: SubscriptionNewsEntityWithId, IsRead: boolean) {
+    let filter: FilterQuery<SubscriptionNewsEntityWithId>;
+    if (param.news_id) filter = {news_id: {$eq: param.news_id}};
+    else if (param._id) filter = {_id: {$eq: param._id}};
+    else return null;
+    return this.subscriptionNews.updateMany(filter, {is_read: IsRead});
   }
 
   async deleteSubscription(param: SubscriptionEntity): Promise<SubscriptionEntity> {
@@ -59,7 +69,7 @@ export class SubscriptionRepositoryImplement {
     return subscription?.toObject() as SubscriptionEntity;
   }
 
-  async findSubscriptionNews(
+  async findSubscriptionNewsList(
     subscriberId: string,
     schoolId: ObjectId
   ): Promise<SubscriptionNewsList[]> {
@@ -91,9 +101,9 @@ export class SubscriptionRepositoryImplement {
       },
       {
         $project: {
-          _id: 0,
+          _id: '$subscription-news._id',
           news_id: '$subscription-news.news_id',
-          subscription_news_id: '$subscription-news._id',
+          is_read: '$subscription-news.is_read',
         },
       },
     ];
@@ -119,12 +129,12 @@ export class SubscriptionRepositoryImplement {
       ...lookupNewsStages,
       {
         $project: {
-          subscription_news_id: 1,
           news_id: 1,
           title: '$news.title',
           admin_id: '$news.admin_id',
           create_at: '$news.create_at',
           update_at: '$news.update_at',
+          is_read: 1,
         },
       },
       {
@@ -132,5 +142,67 @@ export class SubscriptionRepositoryImplement {
       },
     ];
     return (await this.subscription.aggregate(searchStages)) as SubscriptionNewsList[];
+  }
+
+  async findSubscriptionNews(subscriptionNewsId: ObjectId): Promise<AggregatedNewsType> {
+    const filterStages: PipelineStage[] = [
+      {
+        $match: {
+          _id: subscriptionNewsId,
+        },
+      },
+    ];
+    const lookupNewsStages: PipelineStage[] = [
+      {
+        $lookup: {
+          from: 'news',
+          localField: 'news_id',
+          foreignField: '_id',
+          as: 'news',
+        },
+      },
+      {
+        $unwind: {
+          path: '$news',
+        },
+      },
+      {
+        $match: {'news.delete_at': {$exists: false}},
+      },
+    ];
+    const lookupSubscriptionStages: PipelineStage[] = [
+      {
+        $lookup: {
+          from: 'subscription',
+          localField: 'subscription_id',
+          foreignField: '_id',
+          as: 'subscription',
+        },
+      },
+      {
+        $unwind: {
+          path: '$subscription',
+        },
+      },
+    ];
+    const searchStages: PipelineStage[] = [
+      ...filterStages,
+      ...lookupNewsStages,
+      ...lookupSubscriptionStages,
+      {
+        $project: {
+          subscription_id: 1,
+          subscriber_id: '$subscription.subscriber_id',
+          news_id: 1,
+          title: '$news.title',
+          contents: '$news.contents',
+          is_read: 1,
+          create_at: '$news.create_at',
+          update_at: '$news.update_at',
+          admin_id: '$news.admin_id',
+        },
+      },
+    ];
+    return (await this.subscriptionNews.aggregate(searchStages))[0] as AggregatedNewsType;
   }
 }

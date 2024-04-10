@@ -15,8 +15,7 @@
     "strictNullChecks": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
-    "resolveJsonModule": true,
-    "allowJs": true
+    "resolveJsonModule": true
   },
   "include": ["src/**/*.ts", "test/**/*.ts", "src/event/interface/.controller.ts"]
 }
