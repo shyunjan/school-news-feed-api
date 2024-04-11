@@ -1,30 +1,32 @@
-import { Module, Provider } from "@nestjs/common";
-import { JwtService } from "@nestjs/jwt";
-import { CqrsModule } from "@nestjs/cqrs";
-import { MongooseModule } from "@nestjs/mongoose";
-import { Schema } from "mongoose";
-import { SubscriptionNewsController } from "./subscription.controller";
-import { AuthModule } from "src/auth/auth.module";
-import { SubscriptionInjectionToken } from "./Injection-token";
+import {Module, Provider} from '@nestjs/common';
+import {JwtService} from '@nestjs/jwt';
+import {CqrsModule} from '@nestjs/cqrs';
+import {MongooseModule} from '@nestjs/mongoose';
+import {Schema} from 'mongoose';
+import {SubscriptionController} from './subscription.controller';
+import {AuthModule} from 'src/auth/auth.module';
+import {SubscriptionInjectionToken} from './Injection-token';
 import {
   SubscriptionEntity,
   SubscriptionSchema,
   SubscriptionRepositoryImplement,
   SubscriptionNewsEntity,
   SubscriptionNewsSchema,
-} from "./infra";
-import { AuthInjectionToken } from "src/auth/Injection-token";
-import { AuthRepositoryImplement } from "src/auth/infra/auth.repository.implement";
+} from './infra';
+import {AuthInjectionToken} from 'src/auth/Injection-token';
+import {AuthRepositoryImplement} from 'src/auth/infra/auth.repository.implement';
 import {
   CreateSubscriptionCommandHandler,
   DeleteSubscriptionCommandHandler,
+  SubscriptionNewsListQueryHandler,
   SubscriptionNewsQueryHandler,
-} from "./application";
+} from './application';
 
 const application = [
   JwtService,
   CreateSubscriptionCommandHandler,
   DeleteSubscriptionCommandHandler,
+  SubscriptionNewsListQueryHandler,
   SubscriptionNewsQueryHandler,
 ];
 
@@ -54,7 +56,7 @@ const infrastructure: Provider[] = [
       },
     ]),
   ],
-  controllers: [SubscriptionNewsController],
+  controllers: [SubscriptionController],
   providers: [...application, ...infrastructure],
   exports: [MongooseModule],
 })

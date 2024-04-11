@@ -17,9 +17,5 @@
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true
   },
-  "include": [
-    "src/**/*.ts",
-    "test/**/*.ts",
-    "src/event/interface/.controller.ts"
-  ]
+  "include": ["src/**/*.ts", "test/**/*.ts", "src/event/interface/.controller.ts"]
 }
