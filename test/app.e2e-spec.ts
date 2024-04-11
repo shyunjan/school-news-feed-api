@@ -51,12 +51,12 @@ describe('app: NestFastifyApplication', () => {
         // expect(res.type).toEqual('application/json');
         expect(res.body.success).toBeTruthy();
         token = res.body.data;
-        console.debug(`token.length = ${token.length}`);
+        // console.debug(`token.length = ${token.length}`);
         expect(token.length).toBeGreaterThan(160);
       });
   });
 
-  it(`3. Query subscription-news (GET)`, async () => {
+  it(`3. Query subscription-news list (GET)`, async () => {
     return request(app.getHttpServer())
       .get('/subscription/news/query-list?school_id=6613d6743f643554503bd562')
       .set('Authorization', `Bearer ${token}`)

@@ -10,7 +10,12 @@ import {
 } from '.';
 import CustomError from 'src/common/error/custom-error';
 import {RESULT_CODE} from 'src/constant';
-import {SubscriptionNewsList, AggregatedNewsType, SubscriptionNewsEntityWithId} from 'src/types';
+import {
+  SubscriptionNewsList,
+  AggregatedNewsType,
+  SubscriptionNewsEntityWithId,
+  SubscriptionEntityWithId,
+} from 'src/types';
 
 export class SubscriptionRepositoryImplement {
   private readonly logger = new Logger(this.constructor.name);
@@ -57,7 +62,7 @@ export class SubscriptionRepositoryImplement {
     return this.subscriptionNews.updateMany(filter, {is_read: IsRead});
   }
 
-  async deleteSubscription(param: SubscriptionEntity): Promise<SubscriptionEntity> {
+  async deleteSubscription(param: SubscriptionEntity): Promise<SubscriptionEntityWithId> {
     const result = await this.subscription.updateOne(
       {subscriber_id: param.subscriber_id, school_id: param.school_id},
       {delete_at: new Date()}
@@ -66,7 +71,7 @@ export class SubscriptionRepositoryImplement {
 
     const subscription = await this.findSubscription(param);
     this.logger.debug(`deleted subscription ID = ${subscription?._id}`);
-    return subscription?.toObject() as SubscriptionEntity;
+    return subscription as SubscriptionEntityWithId;
   }
 
   async findSubscriptionNewsList(
