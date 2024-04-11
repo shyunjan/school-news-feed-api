@@ -183,7 +183,7 @@ http://localhost:3000/welcome
 
 #### 2.3 [관리자 로그인 필요] 학교 생성
 
-**`[POST] /auth/login`**
+**`[POST] /school/register`**
 
 위의 (_`2.1 학교관리자 생성`_)단계에서 학교는 생성하지 않았다면 이 단계에서 학교 기본 정보를 생성한다.  
 학교관리자 로그인이 필요하므로 바로 위의 (_`2.2 로그인`_)단계에서 생성된 관리자의 **access token**을 학교 등록 API 바로 옆의 swagger 자물쇠 아이콘을 클릭하고 셋팅한다.  
@@ -307,12 +307,12 @@ http://localhost:3000/welcome
 
 #### 2.6 (학생) 로그인
 
-**`[POST] /auth/register-user`**
+**`[POST] /auth/login`**
 
-로그인 API url이나 방식은 위에서 설명한 _`2.2 (학교관리자) 로그인`_ 과 동일하다. 바로 위 _`2.5 유저(학생) 가입`_ 시에 입력했던 `"id"`와 `"password"`만 바꾼다.
+로그인 API url이나 방식은 위에서 설명한 _`2.2 (학교관리자) 로그인`_ 과 동일하다. 바로 위 _`2.5 유저(학생) 가입`_ 시에 입력했던 `"id"`와 `"password"`로 바꾼다.
 
 - Request URL
-  > http://localhost:3000/auth/register-user
+  > http://localhost:3000/auth/login
 - Request body
   ```bash
   {
