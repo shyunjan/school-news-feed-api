@@ -47,7 +47,7 @@ $ npm run local
 
 webpack 5.82.1 compiled successfully in 485 ms
 config.MODE = local
-config.MONGO_DB_URL = ${MONGO_DB_CONNECTION_SECRET}
+config.MONGO_DB_URL = ${ MongoDB 커넥션 정보 }
 [server] info 12:30:07:903 [NestFactory] Starting Nest application...
 [server] info 12:30:07:941 [InstanceLoader] MongooseModule dependencies initialized
 ...
@@ -56,26 +56,58 @@ config.MONGO_DB_URL = ${MONGO_DB_CONNECTION_SECRET}
 ...
 ```
 
-#### 1.2 로컬 주소 Health Check
+#### 1.2 로컬 .env 파일
+
+보안 원칙상 현재는 [Github 리포지토리]에 .env 파일을 올리지 않은 상태이기 때문에 .env 파일을 작성하지 않고 로컬에서 실행하면 아래와 같은 오류가 발생할 것이다
+
+```bash
+webpack 5.82.1 compiled successfully in 501 ms
+config.MODE = undefined
+config.MONGO_DB_URL = undefined
+info [NestFactory] Starting Nest application...
+error [MongooseModule] Unable to connect to the database. Retrying (1)...
+info [InstanceLoader] MongooseModule dependencies initialized
+info [InstanceLoader] PasswordModule dependencies initialized
+info [InstanceLoader] JwtModule dependencies initialized
+info [InstanceLoader] AppModule dependencies initialized
+info [InstanceLoader] CqrsModule dependencies initialized
+error [MongooseModule] Unable to connect to the database. Retrying (2)...
+error [MongooseModule] Unable to connect to the database. Retrying (3)...
+```
+
+로컬에서 테스트하기 위해서는 .env 파일을 아래와 같이 작성한다.
+
+```js
+MODE=local
+
+MONGO_DB_URL=${ MongoDB 커넥션 정보 }
+
+JWT_ACCESS_TOKEN_SECRET=${ 토큰 액세스 시크릿 }
+JWT_ACCESS_TOKEN_EXPIRATION_TIME=24h
+JWT_REFRESH_TOKEN_SECRET=${ 토큰 리프레쉬 시크릿 }
+JWT_REFRESH_TOKEN_EXPIRATION_TIME=365d
+```
+
+#### 1.3 로컬 주소 Health Check
 
 http://localhost:3000/welcome
 
-#### 1.3 Swagger (Open Api Specification 3.0)
+#### 1.4 Swagger (Open Api Specification 3.0)
 
 로컬: http://localhost:3000/api  
 클라우드: [[CLOUDTYPE]](https://port-0-school-news-feed-api-2aat2clumwcq8y.sel5.cloudtype.app/api 'school-news-feed-api') https://port-0-school-news-feed-api-2aat2clumwcq8y.sel5.cloudtype.app/api
 
-#### 1.4 클라우드 배포 설정
+#### 1.5 클라우드 배포 설정
 
 - Git 저장소: `https://github.com/shyunjan/school-news-feed-api.git`
 - 브랜치: `main`
 - Environment variables:
   - NODE_ENV: `production`
   - MODE: `production`
-  - MONGO_DB_URL: `${MONGO_DB_CONNECTION_SECRET}`
-  - JWT_ACCESS_TOKEN_SECRET: `schoolnewsfeed`
+  - MONGO_DB_URL: `${ MongoDB 커넥션 정보 }`
+  - JWT_ACCESS_TOKEN_SECRET: `${ 토큰 액세스 시크릿 }`
   - JWT_ACCESS_TOKEN_EXPIRATION_TIME: `24h`
-  - JWT_REFRESH_TOKEN_SECRET: `refschoolnewsfeed`
+  - JWT_REFRESH_TOKEN_SECRET: `{ 토큰 리프레쉬 시크릿 }`
   - JWT_REFRESH_TOKEN_EXPIRATION_TIME: `365d`
 - Port: `3000`
 - Install command: `npm install`
@@ -89,7 +121,7 @@ http://localhost:3000/welcome
 ### 2. 테스트 절차 (시나리오)
 
 1. 로컬로 테스트하기 위해서는 보안 관계상 GitHub에 배포되지 않은 .env 파일을 위 `1.4 클라우드 배포 설정`의 `Environment variables:` 에 나와 있는대로 작성해야 한다
-2. 로컬 셋팅이 힘들다면 위 `1.3 Swagger`의 클라우드 서버를 이용하는 것도 가능하다
+2. 로컬 셋팅이 힘들다면 위 `1.4 Swagger`의 [클라우드 서버](https://port-0-school-news-feed-api-2aat2clumwcq8y.sel5.cloudtype.app/api 'school-news-feed-api')를 이용하는 것도 가능하다
 3. Swagger example을 그대로 실행하면 데이터베이스에 이미 저장되어 있는 primary key 데이터와 충돌이 일어날 수 있으므로 주의한다
 4. 일단 아래 테스트 절차는 로컬 Swagger(http://localhost:3000/api) 기준으로 진행한다
 
