@@ -47,7 +47,7 @@ $ npm run local
 
 webpack 5.82.1 compiled successfully in 485 ms
 config.MODE = local
-config.MONGO_DB_URL = mongodb+srv://dbUser0:^sbtm2237!@cluster-side.kaxzbw1.mongodb.net/news_feed?retryWrites=true&w=majority&appName=Cluster-Side
+config.MONGO_DB_URL = ${MONGO_DB_CONNECTION_SECRET}
 [server] info 12:30:07:903 [NestFactory] Starting Nest application...
 [server] info 12:30:07:941 [InstanceLoader] MongooseModule dependencies initialized
 ...
@@ -60,9 +60,10 @@ config.MONGO_DB_URL = mongodb+srv://dbUser0:^sbtm2237!@cluster-side.kaxzbw1.mong
 
 http://localhost:3000/welcome
 
-#### 1.3 로컬 Swagger (Open Api Specification 3.0)
+#### 1.3 Swagger (Open Api Specification 3.0)
 
-http://localhost:3000/api
+로컬: http://localhost:3000/api  
+클라우드: [[CLOUDTYPE]](https://port-0-school-news-feed-api-2aat2clumwcq8y.sel5.cloudtype.app/api 'school-news-feed-api') https://port-0-school-news-feed-api-2aat2clumwcq8y.sel5.cloudtype.app/api
 
 #### 1.4 클라우드 배포 설정
 
@@ -71,7 +72,7 @@ http://localhost:3000/api
 - Environment variables:
   - NODE_ENV: `production`
   - MODE: `production`
-  - MONGO_DB_URL: `mongodb+srv://dbUser0:^sbtm2237!@cluster-side.kaxzbw1.mongodb.net/news_feed?retryWrites=true&w=majority&appName=Cluster-Side`
+  - MONGO_DB_URL: `${MONGO_DB_CONNECTION_SECRET}`
   - JWT_ACCESS_TOKEN_SECRET: `schoolnewsfeed`
   - JWT_ACCESS_TOKEN_EXPIRATION_TIME: `24h`
   - JWT_REFRESH_TOKEN_SECRET: `refschoolnewsfeed`
@@ -82,10 +83,15 @@ http://localhost:3000/api
   - Start command: `npm run start:prod`
   - Health Check: `/`
 
+보안 관계상 MONGO_DB_URL과 계정 정보는 보이지 않도록 처리했다.
+테스트 기관 측에서 별도로 설치하여 테스트하거나 상단 `1. 기본 정보`의 클라우드 배포 서버로 테스트를 진행하기 바란다.
+
 ### 2. 테스트 절차 (시나리오)
 
-1. 로컬 Swagger(http://localhost:3000/api) 기준으로 진행한다
-2. Swagger example을 그대로 실행하면 데이터베이스에 이미 저장되어 있는 primary key 데이터와 충돌이 일어날 수 있으므로 주의한다
+1. 로컬로 테스트하기 위해서는 보안 관계상 GitHub에 배포되지 않은 .env 파일을 위 `1.4 클라우드 배포 설정`의 `Environment variables:` 에 나와 있는대로 작성해야 한다
+2. 로컬 셋팅이 힘들다면 위 `1.3 Swagger`의 클라우드 서버를 이용하는 것도 가능하다
+3. Swagger example을 그대로 실행하면 데이터베이스에 이미 저장되어 있는 primary key 데이터와 충돌이 일어날 수 있으므로 주의한다
+4. 일단 아래 테스트 절차는 로컬 Swagger(http://localhost:3000/api) 기준으로 진행한다
 
 #### 2.1 학교관리자 생성
 
