@@ -346,7 +346,7 @@ _`2.2 (학교관리자) 로그인`_ 과 마찬가지로 위의 Response body 에
 
 **`[POST] /subscription/register`**
 
-API 바로 옆의 swagger 자물쇠 아이콘이 관리자 access token이 입력되어 있는 상태이므로 잠겨있을 것이다. 자물쇠를 클릭하고 `[Logout]` 버튼을 누른 다음 바로 위의 *`2.6 (학생) 로그인`*에서 생성했던 일반 유저(학생)용 **access token**을 입력하여 자물쇠를 다시 잠근다.  
+API 바로 옆의 swagger 자물쇠 아이콘이 관리자 access token이 입력되어 있는 상태이므로 잠겨있을 것이다. 자물쇠를 클릭하고 `[Logout]` 버튼을 누른 다음 바로 위의 _`2.6 (학생) 로그인`_ 에서 생성했던 일반 유저(학생)용 **access token**을 입력하여 자물쇠를 다시 잠근다.  
 여기서는 구독할 학교 번호를 **`school_id`** 자리에 입력해야 한다. 위의 _`2.3 [관리자 로그인 필요] 학교 생성`_ 단계에서 생성했던 학교의 번호(`"_id"` 프로퍼티의 `"66177192d5802453a27ae458"`)를 입력한다. 혹은 `전체 학교 리스트 조회` API를 통해서도 동일하게 확인할 수 있다.
 
 - Request URL
@@ -443,7 +443,7 @@ API 바로 옆의 swagger 자물쇠 아이콘이 관리자 access token이 입�
 마찬가지로 구독 취소할 학교 번호를 **`school_id`** 자리에 입력한다.
 
 - Request URL
-  > http://localhost:3000/subscription/news/query-list
+  > http://localhost:3000/subscription/cancel
 - Request body
   없음
 - curl
@@ -706,14 +706,10 @@ Response body를 자세히 보면 `"delete_at"`이 생긴 걸 볼 수 있다.
 - curl
   ```bash
   $ curl -X 'PUT' \
-      'http://localhost:3000/news/modify?news_id=6617833850b1fdfe6da55523' \
+      'http://localhost:3000/news/delete?news_id=6617833850b1fdfe6da55523' \
       -H 'accept: application/json' \
       -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImdhYnJpZWwiLCJpc19hZG1pbiI6dHJ1ZSwiaWF0IjoxNzEyODE4OTMzLCJleHAiOjE3MTI5MDUzMzN9.wpTXgqz2df2PZZUSP82qgjkXDEFbxzyjfFbfklunzvM' \
       -H 'Content-Type: application/json' \
-      -d '{
-            "title": "[오류수정] 서울시립대 두번째 뉴스",
-            "contents": "일부 임직원 누락이 있었고, 퇴사 임직원을 제외합니다. 혼란을 드려서 죄송합니다."
-          }'
   ```
 - Response body
   ```bash
@@ -740,7 +736,7 @@ Response body를 자세히 보면 `"delete_at"`이 생긴 걸 볼 수 있다.
 
 **`[GET] /subscription/news/query-list`**
 
-다시 일반 학생 사용자로 로그인하고 **`school_id`** 에 학교번호(`"66177192d5802453a27ae458"`)를 입력하고 조회.
+다시 일반 학생 사용자로 로그인하고 조회.
 
 - Request URL
   > http://localhost:3000/subscription/news/query-list
@@ -769,7 +765,7 @@ Response body를 자세히 보면 `"delete_at"`이 생긴 걸 볼 수 있다.
 
 **`[GET] /subscription/news/read`**
 
-구독함-뉴스번호를 **`subscription_news_id`** 자리에 입력한다. 위의 두번째 뉴스를 입력해보자. 바로 위의 _`2.19 [로그인 필요] 학교별 구독 뉴스 리스트 조회`_ 의 Response body를 보면 **`"_id"`** 프로퍼티의 값 **`"66178e1b0069def19b19c451"`** 이 구독함-뉴스번호다.
+구독함-뉴스번호를 **`subscription_news_id`** 자리에 입력한다. 위의 두번째 뉴스를 입력해보자. 바로 위의 _`2.19 [로그인 필요] 학교별 구독 뉴스 리스트 조회`_ 의 Response body를 보면 **`"_id"`** 프로퍼티의 값 **`"66178e1b0069def19b19c451"`** 이 구독함-뉴스번호다.  
 이 API는 요구 사항에는 없었지만 위의 구독 뉴스 리스트에서 특정 뉴스를 클릭하여 내용을 열람하기 위한 API이다. 아래 **`"contents"`** 가 위의 뉴스 목록 API에는 없었지만 여기서는 나타난다.
 
 - Request URL
