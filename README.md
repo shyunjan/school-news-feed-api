@@ -443,7 +443,7 @@ API 바로 옆의 swagger 자물쇠 아이콘이 관리자 access token이 입�
 마찬가지로 구독 취소할 학교 번호를 **`school_id`** 자리에 입력한다.
 
 - Request URL
-  > http://localhost:3000/subscription/news/query-list
+  > http://localhost:3000/subscription/cancel
 - Request body
   없음
 - curl
