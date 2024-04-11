@@ -77,11 +77,11 @@ http://localhost:3000/welcome
   - JWT_ACCESS_TOKEN_EXPIRATION_TIME: `24h`
   - JWT_REFRESH_TOKEN_SECRET: `refschoolnewsfeed`
   - JWT_REFRESH_TOKEN_EXPIRATION_TIME: `365d`
-  - Port: `3000`
-  - Install command: `npm install`
-  - Build command: `.`
-  - Start command: `npm run start:prod`
-  - Health Check: `/`
+- Port: `3000`
+- Install command: `npm install`
+- Build command: `.`
+- Start command: `npm run start:prod`
+- Health Check: `/`
 
 보안 관계상 MONGO_DB_URL과 계정 정보는 보이지 않도록 처리했다.
 테스트 기관 측에서 별도로 설치하여 테스트하거나 상단 `1. 기본 정보`의 클라우드 배포 서버로 테스트를 진행하기 바란다.
