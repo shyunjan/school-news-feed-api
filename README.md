@@ -58,7 +58,7 @@ config.MONGO_DB_URL = ${ MongoDB 커넥션 정보 }
 
 #### 1.2 로컬 .env 파일
 
-보안 원칙상 현재는 [Github 리포지토리]에 .env 파일을 올리지 않은 상태이기 때문에 .env 파일을 작성하지 않고 로컬에서 실행하면 아래와 같은 오류가 발생할 것이다
+보안 원칙상 현재는 [Github 리포지토리]에 .env 파일을 올리지 않은 상태이기 때문에 .env 파일을 작성하지 않고 로컬에서 실행하면 아래와 같은 오류가 발생할 것이다.
 
 ```bash
 webpack 5.82.1 compiled successfully in 501 ms
@@ -78,6 +78,7 @@ error [MongooseModule] Unable to connect to the database. Retrying (3)...
 로컬에서 테스트하기 위해서는 .env 파일을 아래와 같이 작성한다.
 
 ```js
+NODE_ENV=local
 MODE=local
 
 MONGO_DB_URL=${ MongoDB 커넥션 정보 }
@@ -87,6 +88,8 @@ JWT_ACCESS_TOKEN_EXPIRATION_TIME=24h
 JWT_REFRESH_TOKEN_SECRET=${ 토큰 리프레쉬 시크릿 }
 JWT_REFRESH_TOKEN_EXPIRATION_TIME=365d
 ```
+
+만약 MongoDB를 준비하기 힘든 상황이라면 이메일이나 메신저 등으로 MongoDB 접속정보를 요청한다.
 
 #### 1.3 로컬 주소 Health Check
 
@@ -116,12 +119,11 @@ http://localhost:3000/welcome
 - Health Check: `/`
 
 보안 관계상 MONGO_DB_URL과 계정 정보는 보이지 않도록 처리했다.
-테스트 기관 측에서 별도로 설치하여 테스트하거나 상단 `1. 기본 정보`의 클라우드 배포 서버로 테스트를 진행하기 바란다.
 
 ### 2. 테스트 절차 (시나리오)
 
-1. 로컬로 테스트하기 위해서는 보안 관계상 GitHub에 배포되지 않은 .env 파일을 위 `1.4 클라우드 배포 설정`의 `Environment variables:` 에 나와 있는대로 작성해야 한다
-2. 로컬 셋팅이 힘들다면 위 `1.4 Swagger`의 [클라우드 서버](https://port-0-school-news-feed-api-2aat2clumwcq8y.sel5.cloudtype.app/api 'school-news-feed-api')를 이용하는 것도 가능하다
+1. 위의 _`1.2 로컬 .env 파일`_ 에서 언급했지만, 로컬로 테스트하기 위해서는 보안 관계상 GitHub에 배포되지 않은 .env 파일을 안내대로 작성해야 한다
+2. 로컬 셋팅이 힘들다면 위 `1.4 Swagger`의 [클라우드 서버 Swagger](https://port-0-school-news-feed-api-2aat2clumwcq8y.sel5.cloudtype.app/api 'school-news-feed-api')를 이용하는 것도 가능하다
 3. Swagger example을 그대로 실행하면 데이터베이스에 이미 저장되어 있는 primary key 데이터와 충돌이 일어날 수 있으므로 주의한다
 4. 일단 아래 테스트 절차는 로컬 Swagger(http://localhost:3000/api) 기준으로 진행한다
 
