@@ -105,8 +105,8 @@ http://localhost:3000/welcome
 - Git 저장소: `https://github.com/shyunjan/school-news-feed-api.git`
 - 브랜치: `main`
 - Environment variables:
-  - NODE_ENV: `production`
-  - MODE: `production`
+  - NODE_ENV: `prod`
+  - MODE: `prod`
   - MONGO_DB_URL: `${ MongoDB 커넥션 정보 }`
   - JWT_ACCESS_TOKEN_SECRET: `${ 토큰 액세스 시크릿 }`
   - JWT_ACCESS_TOKEN_EXPIRATION_TIME: `24h`
