@@ -27,6 +27,6 @@ jobs:
             git pull
             npm install
             npx rimraf dist
-            pkill -f /home/ubuntu/server/school-news-feed-api/dist/main.js
+            pkill -x /home/ubuntu/server/school-news-feed-api/dist/main.js
             npx nest build --webpack --webpackPath webpack-hmr.config.js
             exit
