@@ -29,5 +29,5 @@ jobs:
             # pkill -x node
             killall -9 node
             npm run build:prod
-            nohup node dist/main.js < /dev/null > /dev/null 2 > &1 &
+            nohup node dist/main.js < /dev/null > /dev/null 2>&1 &
             exit
