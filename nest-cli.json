@@ -6,6 +6,7 @@
     "watchAssets": true,
     "webpack": false,
     "webpackConfigPath": "webpack-hmr.config.js",
+    "tsConfigPath": "tsconfig.json",
     "builder": "swc",
     "typeCheck": true
   }
