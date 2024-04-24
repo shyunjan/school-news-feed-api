@@ -25,9 +25,8 @@ jobs:
             ls -al
             source ./.env
             git pull
-            npm install
-            npx rimraf dist
+            npm install            
             pkill -x node
-            npx nest build --webpack --webpackPath webpack-hmr.config.js
+            npm run build:prod
             nohup node dist/main.js & > /dev/null
             exit
