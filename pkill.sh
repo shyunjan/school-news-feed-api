@@ -1,1 +1,1 @@
-pkill -f main.js
+pkill -f school-news-feed-api
