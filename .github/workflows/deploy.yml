@@ -26,5 +26,6 @@ jobs:
             source ./.env
             git pull
             npm install
-            sh ./deploy-prod.sh
+            sh ./pkill.sh
+            nohup npm run start:prod & > /dev/null
             exit
