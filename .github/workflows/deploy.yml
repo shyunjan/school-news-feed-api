@@ -24,4 +24,8 @@ jobs:
             cd ~/server/school-news-feed-api/
             ls -al
             source ./.env
-            sh ./deploy-prod.sh
+            git pull
+            # sh ./deploy-prod.sh
+            npm install
+            pkill -f node
+            nohup npm run start:prod &
