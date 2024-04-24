@@ -26,6 +26,6 @@ jobs:
             source ./.env
             git pull
             npm install
-            pkill -f school-news-feed-api
+            sh ./pkill.sh
             nohup npx nest build --webpack --webpackPath webpack-hmr.config.js &
             exit
