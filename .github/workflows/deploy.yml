@@ -1,0 +1,25 @@
+name: School News Feed on Oracle Cloud
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: execute remote ssh & deploy API server
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST_IP }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_RSA_PRIVATE_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          script: |
+            pkill -f node
+            cd server/school-news-feed-api/
+            git pull
+            npm install
+            source .env
+            nohup npm run start:prod &
+            exit
