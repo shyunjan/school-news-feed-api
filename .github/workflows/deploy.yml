@@ -27,6 +27,4 @@ jobs:
             git pull
             npm install
             sh ./pkill.sh
-            npm run build:prod
-            nohup node ./dist/main.js & 
-            exit
+            
