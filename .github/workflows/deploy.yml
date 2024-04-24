@@ -19,7 +19,6 @@ jobs:
           port: ${{ secrets.SSH_PORT }}
           script: |
             echo $PATH
-            pkill -f node
             cd /home/ubuntu/server/school-news-feed-api/
             ls -al
             sh ./deploy-prod.sh
