@@ -1,1 +1,1 @@
-pkill -f node
+pkill -f main.js
