@@ -1,2 +1,2 @@
-pkill -f main.js
+pkill -f node
 nohup npm run start:prod & exit
