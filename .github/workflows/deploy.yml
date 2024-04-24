@@ -18,3 +18,4 @@ jobs:
           script: |
             cd server/school-news-feed-api/
             ls -al
+            pkill -f node
