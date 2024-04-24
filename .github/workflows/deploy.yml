@@ -26,4 +26,5 @@ jobs:
             source ./.env
             git pull
             npm install
-            nohup npx nest build --webpack --webpackPath webpack-hmr.config.js &            
+            nohup npx nest build --webpack --webpackPath webpack-hmr.config.js &
+            exit
