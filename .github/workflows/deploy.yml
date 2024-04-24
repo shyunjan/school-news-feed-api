@@ -25,8 +25,9 @@ jobs:
             ls -al
             source ./.env
             git pull
-            npm install            
-            pkill -x node
+            npm install
+            # pkill -x node
+            killall -9 node
             npm run build:prod
-            nohup node dist/main.js & > /dev/null
+            nohup node dist/main.js > /dev/null &
             exit
