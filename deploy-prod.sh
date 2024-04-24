@@ -1,2 +1,3 @@
 pkill -f main.js
-npm run start:prod
+nohup npm run start:prod & > /dev/null
+exit
