@@ -1,2 +1,2 @@
 pkill -f node
-nohup npm run start:prod & exit
+nohup npm run start-github-action:prod & exit
