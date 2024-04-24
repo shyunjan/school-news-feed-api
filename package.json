@@ -20,7 +20,7 @@
     "start:local": "rimraf dist && nest build --webpack --webpackPath webpack-hmr.config.js --watch",
     "start:dev": "rimraf dist && nest build --webpack --webpackPath webpack-hmr.config.js",
     "start:debug": "nest start --debug --watch",
-    "start:prod": "rimraf dist && nest start --webpack --webpackPath webpack-hmr.config.js && exit",
+    "start:prod": "rimraf dist && nest start",
     "test:e2e": "dotenv -- npm run test:e2e:local",
     "test:e2e:local": "jest --detectOpenHandles --config test/jest.e2e.js",
     "eslint": "eslint \"./src/**/*.ts\" && tsc --noemit",
