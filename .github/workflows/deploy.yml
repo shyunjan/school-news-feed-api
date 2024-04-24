@@ -27,5 +27,7 @@ jobs:
             git pull
             # sh ./deploy-prod.sh
             npm install
-            pkill -f npm
-            nohup npm run start:prod &
+      - name: execute API server
+        run: |
+          pkill -f npm
+          nohup npm run start:prod &
