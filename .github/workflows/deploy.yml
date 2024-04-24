@@ -28,6 +28,4 @@ jobs:
             # sh ./deploy-prod.sh
             npm install
       - name: execute API server
-        run: |
-          pkill -f npm
-          nohup npm run start:prod &
+        run: ls -al
