@@ -26,6 +26,6 @@ jobs:
             source ./.env
             git pull
             npm install
-            sh ./pkill.sh
+            rimraf dist
             nohup npx nest build --webpack --webpackPath webpack-hmr.config.js &
             exit
