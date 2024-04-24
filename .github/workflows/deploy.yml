@@ -23,4 +23,5 @@ jobs:
             npm -v
             cd ~/server/school-news-feed-api/
             ls -al
+            source ./.env
             sh ./deploy-prod.sh
