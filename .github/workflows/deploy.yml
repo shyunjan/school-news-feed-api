@@ -26,8 +26,6 @@ jobs:
             source ./.env
             git pull
             npm install
-            # pkill -x node
+            # pkill -x node # 이 명령도 작동하지만 인터넷에서는 아래 명령을 더 권장하고 있다.
             killall -9 node
-            npm run build:prod
-            nohup node dist/main.js < /dev/null > /dev/null 2>&1 &
-            exit
+            nohup npm run start:prod < /dev/null > /dev/null 2>&1 &
