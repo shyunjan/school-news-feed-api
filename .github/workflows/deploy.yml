@@ -26,5 +26,7 @@ jobs:
             source ./.env
             git pull
             npm install
-            sh ./restart.sh
-            
+            sh ./pkill.sh
+            npm run build:prod
+            nohup node ./dist/main.js & 
+            exit
