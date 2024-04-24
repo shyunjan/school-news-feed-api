@@ -11,7 +11,7 @@ jobs:
       - name: execute remote ssh & deploy API server
         uses: appleboy/ssh-action@master
         env:
-          ROOT_PATH: ${{ SSH_ROOT_PATH }}
+          ROOT_PATH: ${{ secrets.SSH_ROOT_PATH }}
         with:
           host: ${{ secrets.SSH_HOST_IP }}
           username: ${{ secrets.SSH_USER }}
