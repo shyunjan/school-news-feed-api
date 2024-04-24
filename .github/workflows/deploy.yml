@@ -27,5 +27,4 @@ jobs:
             git pull
             npm install
             sh ./pkill.sh
-            nohup npm run start:prod & > /dev/null
-            exit
+            nohup npm run start:prod & exit
