@@ -27,5 +27,5 @@ jobs:
             git pull
             # sh ./deploy-prod.sh
             npm install
-            pkill -f node
+            pkill -f npm
             nohup npm run start:prod &
