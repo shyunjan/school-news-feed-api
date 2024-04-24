@@ -17,4 +17,7 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_RSA_PRIVATE_KEY }}
           port: ${{ secrets.SSH_PORT }}
-          run: pkill -f node
+          run: |
+            cd /home/ubuntu/server/school-news-feed-api/
+            ls -al
+            sh ./deploy-prod.sh            
