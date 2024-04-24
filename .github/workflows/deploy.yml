@@ -26,5 +26,5 @@ jobs:
             source ./.env
             git pull
             npm install
-            nohup sh ./deploy-prod.sh &
+            nohup sh ./deploy-prod.sh & > /dev/null
             
