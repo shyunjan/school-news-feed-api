@@ -1,6 +1,6 @@
 // webpack-hmr.config.js
 const nodeExternals = require('webpack-node-externals');
-const {RunScriptWebpackPlugin} = require('run-script-webpack-plugin');
+// const {RunScriptWebpackPlugin} = require('run-script-webpack-plugin');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 
 module.exports = function (options, webpack) {
@@ -31,7 +31,7 @@ module.exports = function (options, webpack) {
       new webpack.WatchIgnorePlugin({
         paths: [/\.js$/, /\.d\.ts$/],
       }),
-      new RunScriptWebpackPlugin({name: options.output.filename}),
+      // new RunScriptWebpackPlugin({name: options.output.filename}),
     ],
     devtool: 'source-map',
   };

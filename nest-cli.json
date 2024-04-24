@@ -4,9 +4,8 @@
   "compilerOptions": {
     "assets": [{"include": "**/*.hbs"}, {"include": "./config/env/**"}],
     "watchAssets": true,
-    "webpack": false,
+    "webpack": true,
     "webpackConfigPath": "webpack-hmr.config.js",
-    "tsConfigPath": "tsconfig.json",
     "builder": "swc",
     "typeCheck": true
   }
